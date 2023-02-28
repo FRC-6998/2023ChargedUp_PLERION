@@ -16,10 +16,10 @@ import static frc.robot.RobotMap.*;
 public class LadderSubsystem extends SubsystemBase
 {
     private final CANSparkMax ladderMotor_L =
-            new CANSparkMax(INTAKE_LADDER_MOTOR_L, CANSparkMaxLowLevel.MotorType.kBrushless);
+            new CANSparkMax(LADDER_MOTOR_L, CANSparkMaxLowLevel.MotorType.kBrushless);
 
     private final CANSparkMax ladderMotor_R =
-            new CANSparkMax(INTAKE_LADDER_MOTOR_R, CANSparkMaxLowLevel.MotorType.kBrushless);
+            new CANSparkMax(LADDER_MOTOR_R, CANSparkMaxLowLevel.MotorType.kBrushless);
     public LadderSubsystem(){
         configLadderMotor();
     }

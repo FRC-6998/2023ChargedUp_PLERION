@@ -24,8 +24,8 @@ public class RobotMap {
     public static final int SWERVE_RIGHTREAR_ANGLEMOTOR = 3;
     public static final int SWERVE_RIGHTREAR_CANCODER = 3;
 
-    public static final int INTAKE_ANGLE_MOTOR = 5;
+    public static final int GRAB_ANGLE_MOTOR = 5;
 
-    public static final int INTAKE_LADDER_MOTOR_L = 6;
-    public static final int INTAKE_LADDER_MOTOR_R = 7;
+    public static final int LADDER_MOTOR_L = 6;
+    public static final int LADDER_MOTOR_R = 7;
 }

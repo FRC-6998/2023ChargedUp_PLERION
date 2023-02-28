@@ -85,19 +85,19 @@ public final class Constants {
     public static final double UP_VOLTAGE_COMPENSATION = 12.0;
 
 
-    public static final boolean INTAKE_ANGLE_MOTOR_INVERTED = false;
-    public static final int INTAKE_ANGLE_MOTOR_CURRENTLIMIT = 35;
-    public static final double INTAKE_ANGLE_MOTOR_FACTOR = 360.0 / 80.0;
-    public static final CANSparkMax.IdleMode INTAKE_ANGLE_MOTOR_IDLEMODE = CANSparkMax.IdleMode.kBrake;
-    public static final double INTAKE_ANGLE_MOTOR_KP = 0.05;//Wait to test.
-    public static final double INTAKE_ANGLE_MOTOR_KI = 0.0;
-    public static final double INTAKE_ANGLE_MOTOR_KD = 0.0;
-    public static final double INTAKE_ANGLE_MOTOR_KF = 0.0;
-    public static final double INTAKE_ANGLE_MOTOR_SMARTMOTION_MAX_VELOCITY = 5870 * INTAKE_ANGLE_MOTOR_FACTOR;
-    public static final double INTAKE_ANGLE_MOTOR_SMARTMOTION_MAX_ACCEL = 5870 * INTAKE_ANGLE_MOTOR_FACTOR;
-    public static final boolean INTAKE_ABSOLUTE_ENCODER_INVERTED = false;
-    public static final double INTAKE_ABSOLUTE_ENCODER_FACTOR = 360.0;
-    public static final double INTAKE_ABSOLUTE_ENCODER_OFFSET = 360.0;
+    public static final boolean GRAB_ANGLE_MOTOR_INVERTED = false;
+    public static final int GRAB_ANGLE_MOTOR_CURRENTLIMIT = 35;
+    public static final double GRAB_ANGLE_MOTOR_FACTOR = 360.0 / 80.0;
+    public static final CANSparkMax.IdleMode GRAB_ANGLE_MOTOR_IDLEMODE = CANSparkMax.IdleMode.kBrake;
+    public static final double GRAB_ANGLE_MOTOR_KP = 0.05;//Wait to test.
+    public static final double GRAB_ANGLE_MOTOR_KI = 0.0;
+    public static final double GRAB_ANGLE_MOTOR_KD = 0.0;
+    public static final double GRAB_ANGLE_MOTOR_KF = 0.0;
+    public static final double GRAB_ANGLE_MOTOR_SMARTMOTION_MAX_VELOCITY = 5870 * GRAB_ANGLE_MOTOR_FACTOR;
+    public static final double GRAB_ANGLE_MOTOR_SMARTMOTION_MAX_ACCEL = 5870 * GRAB_ANGLE_MOTOR_FACTOR;
+    public static final boolean GRAB_ABSOLUTE_ENCODER_INVERTED = false;
+    public static final double GRAB_ABSOLUTE_ENCODER_FACTOR = 360.0;
+    public static final double GRAB_ABSOLUTE_ENCODER_OFFSET = 360.0;
 
 
     public static final boolean LADDER_MOTOR_INVERTED = false;
