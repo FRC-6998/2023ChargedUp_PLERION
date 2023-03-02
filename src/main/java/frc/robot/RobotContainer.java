@@ -10,6 +10,7 @@ import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -31,7 +32,7 @@ public class RobotContainer
     private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
 
     private final static XboxController controller_driveX = new XboxController(0);
-    //    private final static Joystick controller_driveF = new Joystick(0);
+    private final static XboxController controller_Operator = new XboxController(1);
     private final SendableChooser<String> pathChooser = new SendableChooser<>();
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -48,9 +49,10 @@ public class RobotContainer
         // Configure the trigger bindings
         configureBindings();
 
-        pathChooser.setDefaultOption("Auto 1", "AUTO_1");
-        pathChooser.addOption("Auto 2", "AUTO_2");
+        pathChooser.setDefaultOption("ONLY OUT", "ONLY_OUT");
+        pathChooser.addOption("ONLY BALANCE", "ONLY_BALANCE");
         pathChooser.addOption("Auto 3", "AUTO_3");
+        pathChooser.addOption("DONT MOVE", "DONT_MOVE");
         SmartDashboard.putData("Auto choices", pathChooser);
     }
 
@@ -62,6 +64,8 @@ public class RobotContainer
     }
 
     public Command getAutonomousCommand() {
+        if(pathChooser.getSelected()=="DONT_MOVE"){return null;}
+
         List<PathPlannerTrajectory> pathGroup =
                 PathPlanner.loadPathGroup(pathChooser.getSelected(), new PathConstraints(4, 3));
         // This is just an example event map. It would be better to have a constant, global event map

@@ -12,7 +12,8 @@ import static frc.robot.Constants.*;
 
 public class AutoBalanceCommand extends CommandBase {
     private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
-    private final PIDController pidController = new PIDController(Constants.AUTO_BALANCE_KP,Constants.AUTO_BALANCE_KI,Constants.AUTO_BALANCE_KD);
+    private final PIDController pidController = new PIDController(
+            Constants.AUTO_BALANCE_KP,Constants.AUTO_BALANCE_KI,Constants.AUTO_BALANCE_KD);
     private final Timer timer = new Timer();
     private Stage currentStage;
     private final boolean shouldExitWhenFinished;

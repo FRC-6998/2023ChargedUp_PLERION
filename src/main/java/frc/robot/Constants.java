@@ -110,4 +110,7 @@ public final class Constants {
     public static final double LADDER_MOTOR_KF = 0.0;
     public static final double LADDER_MOTOR_SMARTMOTION_MAX_VELOCITY = 5870 * LADDER_MOTOR_FACTOR;
     public static final double LADDER_MOTOR_SMARTMOTION_MAX_ACCEL = 20000;
+    public static final double LADDER_MAX_LENGTH = 1;
+
+    public static final double LADDER_POVCONTROL_PLUSTIME = 1;
 }

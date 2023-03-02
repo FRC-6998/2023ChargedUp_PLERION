@@ -24,6 +24,21 @@ public class LadderSubsystem extends SubsystemBase
         configLadderMotor();
     }
     private boolean ladderZeroing = false;
+    private void setLadderZeroing(){
+        if(!ladderZeroing&&!ladderMotor_L.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed).isPressed()){
+            ladderZeroing = true;
+        }
+    }
+    private void setLadderMotor(double length){
+        ladderMotor_L.getPIDController()
+                .setReference(length, CANSparkMax.ControlType.kSmartMotion,0);
+    }
+    @Override
+    public void periodic()
+    {
+        setLadderZeroing();
+    }
+
     private void configLadderMotor(){
         ladderMotor_L.restoreFactoryDefaults();
         ladderMotor_L.setInverted(LADDER_MOTOR_INVERTED);
@@ -41,14 +56,5 @@ public class LadderSubsystem extends SubsystemBase
                 .setSmartMotionMaxVelocity(LADDER_MOTOR_SMARTMOTION_MAX_VELOCITY,0);
         ladderMotor_L.getPIDController()
                 .setSmartMotionMaxAccel(LADDER_MOTOR_SMARTMOTION_MAX_ACCEL,0);
-    }
-    private void setLadderZeroing(){
-        if(!ladderZeroing&&!ladderMotor_L.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed).isPressed()){
-            ladderZeroing =true;
-        }
-    }
-    @Override
-    public void periodic()
-    {
     }
 }
