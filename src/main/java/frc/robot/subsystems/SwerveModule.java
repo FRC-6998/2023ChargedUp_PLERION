@@ -89,6 +89,7 @@ public class SwerveModule {
     public void resetToAbsolute(){
         double absolutePosition = getCanCoder().getDegrees() - angleOffSet.getDegrees();
         angleMotorEncoder.setPosition(absolutePosition);
+        //angleCANCoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData,500);
     }
 
 
@@ -126,6 +127,8 @@ public class SwerveModule {
         angleNEO.setInverted(swerveTypeConstants.angleMotorInvert);
         angleNEO.setIdleMode(ANGLE_NEUTRAL_MODE);
         angleMotorEncoder.setPositionConversionFactor(360 / swerveTypeConstants.angleGearRatio);
+
+        angleNEO.burnFlash();
         resetToAbsolute();
     }
 

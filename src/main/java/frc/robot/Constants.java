@@ -7,17 +7,16 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.revrobotics.CANSparkMax;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
 public final class Constants {
-    public static final Rotation2d SWERVE_LEFTFRONT_OFFSET = Rotation2d.fromDegrees(0);//wait for test
-    public static final Rotation2d SWERVE_LEFTREAR_OFFSET = Rotation2d.fromDegrees(0);
-    public static final Rotation2d SWERVE_RIGHTFRONT_OFFSET = Rotation2d.fromDegrees(0);
-    public static final Rotation2d SWERVE_RIGHTREAR_OFFSET = Rotation2d.fromDegrees(0);
+    public static final Rotation2d SWERVE_LEFTFRONT_OFFSET = Rotation2d.fromDegrees(41.923828125);//wait for test
+    public static final Rotation2d SWERVE_LEFTREAR_OFFSET = Rotation2d.fromDegrees(9.755859375);
+    public static final Rotation2d SWERVE_RIGHTFRONT_OFFSET = Rotation2d.fromDegrees(251.19140625);
+    public static final Rotation2d SWERVE_RIGHTREAR_OFFSET = Rotation2d.fromDegrees(179.47265625);
 
     public static final double SWERVE_CHASSIS_TRACKWIDTH_METERS = 0.62865;
     public static final double SWERVE_CHASSIS_WHEELBASE_METERS = 0.62865;
@@ -26,7 +25,7 @@ public final class Constants {
     public static final double SWERVE_MAX_SPEED = 4.5;//Wait for test.
     public static final double SWERVE_MAX_ANGULAR_VELOCITY = 4.5;//Wait for test.
 
-    public static final double SWERVE_POV_MOVE_SPEED = 0.15;
+    public static final double SWERVE_POV_MOVE_SPEED = 0.35;
 
 
     public static final double SWERVE_VOLTAGE_COMPENSATION = 12.0;
@@ -102,7 +101,7 @@ public final class Constants {
 
     public static final boolean LADDER_MOTOR_INVERTED = false;
     public static final int LADDER_MOTOR_CURRENTLIMIT = 35;
-    public static final double LADDER_MOTOR_FACTOR = 30;
+    public static final double LADDER_MOTOR_FACTOR = 1.0;
     public static final CANSparkMax.IdleMode LADDER_MOTOR_IDLEMODE = CANSparkMax.IdleMode.kBrake;
     public static final double LADDER_MOTOR_KP = 0.05;//Wait to test.
     public static final double LADDER_MOTOR_KI = 0.0;

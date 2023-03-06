@@ -43,7 +43,7 @@ public class LadderSubsystem extends SubsystemBase
         ladderMotor_L.restoreFactoryDefaults();
         ladderMotor_L.setInverted(LADDER_MOTOR_INVERTED);
         ladderMotor_L.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed)
-                .enableLimitSwitch(true);
+                .enableLimitSwitch(false);
         ladderMotor_L.setSmartCurrentLimit(LADDER_MOTOR_CURRENTLIMIT);
         ladderMotor_L.enableVoltageCompensation(UP_VOLTAGE_COMPENSATION);
         ladderMotor_L.setIdleMode(LADDER_MOTOR_IDLEMODE);
@@ -56,5 +56,26 @@ public class LadderSubsystem extends SubsystemBase
                 .setSmartMotionMaxVelocity(LADDER_MOTOR_SMARTMOTION_MAX_VELOCITY,0);
         ladderMotor_L.getPIDController()
                 .setSmartMotionMaxAccel(LADDER_MOTOR_SMARTMOTION_MAX_ACCEL,0);
+
+        ladderMotor_R.restoreFactoryDefaults();
+        ladderMotor_R.setInverted(LADDER_MOTOR_INVERTED);
+        ladderMotor_R.setSmartCurrentLimit(LADDER_MOTOR_CURRENTLIMIT);
+        ladderMotor_R.enableVoltageCompensation(UP_VOLTAGE_COMPENSATION);
+        ladderMotor_R.setIdleMode(LADDER_MOTOR_IDLEMODE);
+        ladderMotor_R.getEncoder().setPositionConversionFactor(LADDER_MOTOR_FACTOR);
+        ladderMotor_R.getPIDController().setP(LADDER_MOTOR_KP, 0);
+        ladderMotor_R.getPIDController().setI(LADDER_MOTOR_KI, 0);
+        ladderMotor_R.getPIDController().setD(LADDER_MOTOR_KD, 0);
+        ladderMotor_R.getPIDController().setFF(LADDER_MOTOR_KF,0);
+        ladderMotor_R.getPIDController()
+                .setSmartMotionMaxVelocity(LADDER_MOTOR_SMARTMOTION_MAX_VELOCITY,0);
+        ladderMotor_R.getPIDController()
+                .setSmartMotionMaxAccel(LADDER_MOTOR_SMARTMOTION_MAX_ACCEL,0);
+
+        ladderMotor_R.follow(ladderMotor_L, true);
+        ladderMotor_L.setPeriodicFramePeriod(CANSparkMaxLowLevel.PeriodicFrame.kStatus0, 5);
+
+        ladderMotor_L.burnFlash();
+        ladderMotor_R.burnFlash();
     }
 }

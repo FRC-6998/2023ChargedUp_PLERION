@@ -10,14 +10,16 @@ import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.LadderControlCommand;
 import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.subsystems.GrabSubsystem;
+import frc.robot.subsystems.LadderSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
 import java.util.HashMap;
@@ -30,6 +32,8 @@ public class RobotContainer
 {
     // The robot's subsystems and commands are defined here...
     private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
+    private final LadderSubsystem ladderSubsystem = new LadderSubsystem();
+    private final GrabSubsystem grabSubsystem = new GrabSubsystem();
 
     private final static XboxController controller_driveX = new XboxController(0);
     private final static XboxController controller_Operator = new XboxController(1);
@@ -45,6 +49,11 @@ public class RobotContainer
                 () -> -controller_driveX.getRawAxis(XboxController.Axis.kRightX.value),
                 () -> controller_driveX.getPOV(),
                 () -> controller_driveX.getBackButton()
+        ));
+
+        ladderSubsystem.setDefaultCommand(new LadderControlCommand(
+                ladderSubsystem,
+                () ->controller_Operator.getPOV()
         ));
         // Configure the trigger bindings
         configureBindings();

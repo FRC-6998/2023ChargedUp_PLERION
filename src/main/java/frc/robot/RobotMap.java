@@ -1,12 +1,12 @@
 package frc.robot;
 
-import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.SerialPort;
 
 public class RobotMap {
     public static final String SWERVE_CANBUS_TYPE = "rio";
     public static final PneumaticsModuleType  PNEUMATICS_MODULE_TYPE = PneumaticsModuleType.REVPH;
+    public static final SerialPort.Port NAVX_SERIAL_TYPE = SerialPort.Port.kUSB1;
 
     public static final int SWERVE_LEFTFRONT_DRIVEMOTOR = 1;
     public static final int SWERVE_LEFTFRONT_ANGLEMOTOR = 1;
@@ -24,8 +24,8 @@ public class RobotMap {
     public static final int SWERVE_RIGHTREAR_ANGLEMOTOR = 3;
     public static final int SWERVE_RIGHTREAR_CANCODER = 3;
 
-    public static final int GRAB_ANGLE_MOTOR = 5;
+    public static final int GRAB_ANGLE_MOTOR = 7;
     public static final int GRAB_SOLENOID = 0;
-    public static final int LADDER_MOTOR_L = 6;
-    public static final int LADDER_MOTOR_R = 7;
+    public static final int LADDER_MOTOR_L = 5;
+    public static final int LADDER_MOTOR_R = 6;
 }

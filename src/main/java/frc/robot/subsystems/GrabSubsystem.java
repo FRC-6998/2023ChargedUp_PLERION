@@ -46,6 +46,8 @@ public class GrabSubsystem extends SubsystemBase
                 .setPositionConversionFactor(GRAB_ABSOLUTE_ENCODER_FACTOR);
         grab_Angle.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle)
                 .setZeroOffset(GRAB_ABSOLUTE_ENCODER_OFFSET);
+
+        grab_Angle.burnFlash();
     }
 
     private void setIntakeAngle(double degree){
