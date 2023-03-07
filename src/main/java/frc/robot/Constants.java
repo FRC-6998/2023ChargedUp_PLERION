@@ -94,9 +94,10 @@ public final class Constants {
     public static final double GRAB_ANGLE_MOTOR_KF = 0.0;
     public static final double GRAB_ANGLE_MOTOR_SMARTMOTION_MAX_VELOCITY = 5870 * GRAB_ANGLE_MOTOR_FACTOR;
     public static final double GRAB_ANGLE_MOTOR_SMARTMOTION_MAX_ACCEL = 5870 * GRAB_ANGLE_MOTOR_FACTOR;
-    public static final boolean GRAB_ABSOLUTE_ENCODER_INVERTED = false;
+    public static final boolean GRAB_ABSOLUTE_ENCODER_INVERTED = true;
     public static final double GRAB_ABSOLUTE_ENCODER_FACTOR = 360.0;
-    public static final double GRAB_ABSOLUTE_ENCODER_OFFSET = 360.0;
+    public static final double GRAB_ABSOLUTE_ENCODER_OFFSET = 287.353;
+    public static final float GRAB_ANGLE_LIMIT = 150;
 
 
     public static final boolean LADDER_LOWER_MOTOR_INVERTED = false;
@@ -121,7 +122,7 @@ public final class Constants {
     public static final double LADDER_UPPER_MOTOR_KF = 0.0;
     public static final double LADDER_UPPER_MOTOR_SMARTMOTION_MAX_VELOCITY = 5870 * LADDER_UPPER_MOTOR_FACTOR;
     public static final double LADDER_UPPER_MOTOR_SMARTMOTION_MAX_ACCEL = 20000;
-    public static final double LADDER_LOWER_MAX_LENGTH = 1;
+    public static final float LADDER_LOWER_MAX_LENGTH = 95;
 
 
     public static final double LADDER_MAX_LENGTH = LADDER_LOWER_MAX_LENGTH+LADDER_UPPER_MAX_LENGTH;

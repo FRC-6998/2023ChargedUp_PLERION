@@ -46,6 +46,10 @@ public class LadderSubsystem extends SubsystemBase
         ladderMotor_LL.setInverted(LADDER_LOWER_MOTOR_INVERTED);
         ladderMotor_LL.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed)
                 .enableLimitSwitch(false);
+        ladderMotor_LL.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, LADDER_LOWER_MAX_LENGTH);
+        ladderMotor_LL.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 0);
+        ladderMotor_LL.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse,true);
+        ladderMotor_LL.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward,true);
         ladderMotor_LL.setSmartCurrentLimit(LADDER_LOWER_MOTOR_CURRENTLIMIT);
         ladderMotor_LL.enableVoltageCompensation(UP_VOLTAGE_COMPENSATION);
         ladderMotor_LL.setIdleMode(LADDER_LOWER_MOTOR_IDLEMODE);
@@ -61,6 +65,10 @@ public class LadderSubsystem extends SubsystemBase
 
         ladderMotor_LR.restoreFactoryDefaults();
         ladderMotor_LR.setInverted(LADDER_LOWER_MOTOR_INVERTED);
+        ladderMotor_LR.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, LADDER_LOWER_MAX_LENGTH);
+        ladderMotor_LR.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 0);
+        ladderMotor_LR.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse,true);
+        ladderMotor_LR.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward,true);
         ladderMotor_LR.setSmartCurrentLimit(LADDER_LOWER_MOTOR_CURRENTLIMIT);
         ladderMotor_LR.enableVoltageCompensation(UP_VOLTAGE_COMPENSATION);
         ladderMotor_LR.setIdleMode(LADDER_LOWER_MOTOR_IDLEMODE);
