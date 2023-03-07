@@ -68,8 +68,12 @@ public class RobotContainer
 
     private void configureBindings()
     {
-        new JoystickButton(controller_driveX,XboxController.Button.kRightBumper.value)
+        new JoystickButton(controller_driveX, XboxController.Button.kRightBumper.value)
                 .whenPressed(new InstantCommand(swerveSubsystem::zeroGyro));
+        new JoystickButton(controller_Operator, XboxController.Button.kX.value)
+                .whileTrue(new InstantCommand(() -> grabSubsystem.set_Grabing(true)));
+        new JoystickButton(controller_Operator, XboxController.Button.kA.value)
+                .whileTrue(new InstantCommand(() -> grabSubsystem.set_Grabing(false)));
     }
 
     public Command getAutonomousCommand() {

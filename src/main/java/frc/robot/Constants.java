@@ -102,7 +102,7 @@ public final class Constants {
 
     public static final boolean LADDER_LOWER_MOTOR_INVERTED = false;
     public static final int LADDER_LOWER_MOTOR_CURRENTLIMIT = 35;
-    public static final double LADDER_LOWER_MOTOR_FACTOR = 1.0;
+    public static final double LADDER_LOWER_MOTOR_FACTOR = 30.0;
     public static final CANSparkMax.IdleMode LADDER_LOWER_MOTOR_IDLEMODE = CANSparkMax.IdleMode.kBrake;
     public static final double LADDER_LOWER_MOTOR_KP = 0.05;//Wait to test.
     public static final double LADDER_LOWER_MOTOR_KI = 0.0;
@@ -114,7 +114,7 @@ public final class Constants {
 
     public static final boolean LADDER_UPPER_MOTOR_INVERTED = false;
     public static final int LADDER_UPPER_MOTOR_CURRENTLIMIT = 35;
-    public static final double LADDER_UPPER_MOTOR_FACTOR = 1.0;
+    public static final double LADDER_UPPER_MOTOR_FACTOR = 21.0;
     public static final CANSparkMax.IdleMode LADDER_UPPER_MOTOR_IDLEMODE = CANSparkMax.IdleMode.kBrake;
     public static final double LADDER_UPPER_MOTOR_KP = 0.05;//Wait to test.
     public static final double LADDER_UPPER_MOTOR_KI = 0.0;
@@ -125,8 +125,12 @@ public final class Constants {
     public static final float LADDER_LOWER_MAX_LENGTH = 95;
 
 
-    public static final double LADDER_MAX_LENGTH = LADDER_LOWER_MAX_LENGTH+LADDER_UPPER_MAX_LENGTH;
+    public static final double LADDER_MAX_LENGTH = LADDER_LOWER_MAX_LENGTH + LADDER_UPPER_MAX_LENGTH;
 
 
-    public static final double LADDER_POVCONTROL_PLUSTIME = 1;
+    public static final double LADDER_POVCONTROL_WAITTIME = 1;
+    public static final double LADDER_POVCONTROL_NUM = 0.1;
+    public static final double START_GRAB_ANGLE = 90;
+    public static final double GRAB_ANGLECONTROL_WAITTIME = 1;
+    public static final double GRAB_ANGLECONTROL_NUM = 0.1;
 }

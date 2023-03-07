@@ -21,23 +21,24 @@ public class LadderControlCommand extends CommandBase {
 
         addRequirements(ladderSubsystem);
     }
+    public void zeroLadderLength(){ladderLength=0;}
 
     @Override
     public void execute() {
         switch (povLadderSup.getAsInt()){
             case 0:
-                ladderLength+=0.1;
+                ladderLength+=GRAB_ANGLECONTROL_NUM;
                 timer.start();
-                if(timer.get()>=LADDER_POVCONTROL_PLUSTIME&&ladderLength<LADDER_MAX_LENGTH){
-                    ladderLength+=0.1;
+                if(timer.get()>=LADDER_POVCONTROL_WAITTIME&&ladderLength<=LADDER_MAX_LENGTH){
+                    ladderLength+=GRAB_ANGLECONTROL_NUM;
                     timer.restart();
                 }
                 break;
             case 180:
-                ladderLength-=0.1;
+                ladderLength-=GRAB_ANGLECONTROL_NUM;
                 timer.start();
-                if(timer.get()>=LADDER_POVCONTROL_PLUSTIME&&ladderLength>0){
-                    ladderLength-=0.1;
+                if(timer.get()>=LADDER_POVCONTROL_WAITTIME&&ladderLength>=0){
+                    ladderLength-=GRAB_ANGLECONTROL_NUM;
                     timer.restart();
                 }
                 break;
@@ -45,5 +46,6 @@ public class LadderControlCommand extends CommandBase {
                 timer.reset();
                 break;
         }
+        ladderSubsystem.setLadderLength(ladderLength);
     }
 }

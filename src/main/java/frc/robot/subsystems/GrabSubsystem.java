@@ -18,7 +18,7 @@ public class GrabSubsystem extends SubsystemBase
 {
     private final CANSparkMax grab_AngleMotor =
             new CANSparkMax(GRAB_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
-    private final Solenoid intake_Grab = new Solenoid(PNEUMATICS_MODULE_TYPE,GRAB_SOLENOID);
+    private final Solenoid Grab = new Solenoid(PNEUMATICS_MODULE_TYPE,GRAB_SOLENOID);
     private final ArmFeedforward intake_Angle_armFeedforward =
             new ArmFeedforward(0, 0, 0, 0);
 
@@ -64,13 +64,13 @@ public class GrabSubsystem extends SubsystemBase
         grab_AngleMotor.burnFlash();
     }
 
-    private void setIntakeAngle(double degree){
+    public void setGrabAngle(double degree){
         grab_AngleMotor.getPIDController().setReference(
                 degree, CANSparkMax.ControlType.kSmartMotion, 0,
                 intake_Angle_armFeedforward.calculate(grab_AngleMotor.getEncoder().getPosition(),0));
     }
-    private void setIntake_Grab(boolean grab){
-        intake_Grab.set(grab);
+    public void set_Grabing(boolean grab){
+        Grab.set(grab);
     }
     @Override
     public void periodic()

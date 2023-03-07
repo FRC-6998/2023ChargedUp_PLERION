@@ -6,6 +6,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.*;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -31,9 +32,11 @@ public class LadderSubsystem extends SubsystemBase
             ladderZeroing = true;
         }
     }
-    private void setLadderMotor(double length){
-        ladderMotor_LL.getPIDController()
-                .setReference(length, CANSparkMax.ControlType.kSmartMotion,0);
+    public void setLadderLength(double length){
+        ladderMotor_LL.getPIDController().setReference(
+                length * LADDER_LOWER_MAX_LENGTH/LADDER_MAX_LENGTH, CANSparkMax.ControlType.kSmartMotion);
+        ladderMotor_U.getPIDController().setReference(
+                length * LADDER_UPPER_MAX_LENGTH/LADDER_MAX_LENGTH, CANSparkMax.ControlType.kSmartMotion);
     }
     @Override
     public void periodic()
@@ -91,6 +94,10 @@ public class LadderSubsystem extends SubsystemBase
     private void configUpperLadderMotor(){
         ladderMotor_U.restoreFactoryDefaults();
         ladderMotor_U.setInverted(LADDER_UPPER_MOTOR_INVERTED);
+        ladderMotor_U.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, LADDER_LOWER_MAX_LENGTH);
+        ladderMotor_U.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 0);
+        ladderMotor_U.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse,true);
+        ladderMotor_U.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward,true);
         ladderMotor_U.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed)
                 .enableLimitSwitch(false);
         ladderMotor_U.setSmartCurrentLimit(LADDER_UPPER_MOTOR_CURRENTLIMIT);
@@ -105,5 +112,7 @@ public class LadderSubsystem extends SubsystemBase
                 .setSmartMotionMaxVelocity(LADDER_UPPER_MOTOR_SMARTMOTION_MAX_VELOCITY,0);
         ladderMotor_U.getPIDController()
                 .setSmartMotionMaxAccel(LADDER_UPPER_MOTOR_SMARTMOTION_MAX_ACCEL,0);
+
+        ladderMotor_U.burnFlash();
     }
 }
