@@ -102,27 +102,29 @@ public final class Constants {
 
     public static final boolean LADDER_LOWER_MOTOR_INVERTED = false;
     public static final int LADDER_LOWER_MOTOR_CURRENTLIMIT = 35;
-    public static final double LADDER_LOWER_MOTOR_FACTOR = 30.0;
+    public static final double LADDER_LOWER_MOTOR_FACTOR = 1.0/30.0;
     public static final CANSparkMax.IdleMode LADDER_LOWER_MOTOR_IDLEMODE = CANSparkMax.IdleMode.kBrake;
-    public static final double LADDER_LOWER_MOTOR_KP = 0.05;//Wait to test.
+    public static final double LADDER_LOWER_MOTOR_KP = 0.026809;
     public static final double LADDER_LOWER_MOTOR_KI = 0.0;
     public static final double LADDER_LOWER_MOTOR_KD = 0.0;
-    public static final double LADDER_LOWER_MOTOR_KF = 0.0;
-    public static final double LADDER_LOWER_MOTOR_SMARTMOTION_MAX_VELOCITY = 5870 * LADDER_LOWER_MOTOR_FACTOR;
+    public static final double LADDER_LOWER_MOTOR_KF = 0.00535714286;
+    public static final double LADDER_LOWER_MOTOR_SMARTMOTION_MAX_VELOCITY = 190;
     public static final double LADDER_LOWER_MOTOR_SMARTMOTION_MAX_ACCEL = 20000;
-    public static final double LADDER_UPPER_MAX_LENGTH = 1;
+    public static final double LADDER_LOWER_MOTOR_SMARTMOTION_ALLOWEDERRORS = 0.09875;
+    public static final float LADDER_LOWER_MAX_LENGTH = 3.4510f;
 
     public static final boolean LADDER_UPPER_MOTOR_INVERTED = false;
     public static final int LADDER_UPPER_MOTOR_CURRENTLIMIT = 35;
-    public static final double LADDER_UPPER_MOTOR_FACTOR = 21.0;
+    public static final double LADDER_UPPER_MOTOR_FACTOR = 1/21.0;
     public static final CANSparkMax.IdleMode LADDER_UPPER_MOTOR_IDLEMODE = CANSparkMax.IdleMode.kBrake;
-    public static final double LADDER_UPPER_MOTOR_KP = 0.05;//Wait to test.
+    public static final double LADDER_UPPER_MOTOR_KP = 0.026809;//Wait to test.
     public static final double LADDER_UPPER_MOTOR_KI = 0.0;
     public static final double LADDER_UPPER_MOTOR_KD = 0.0;
     public static final double LADDER_UPPER_MOTOR_KF = 0.0;
-    public static final double LADDER_UPPER_MOTOR_SMARTMOTION_MAX_VELOCITY = 5870 * LADDER_UPPER_MOTOR_FACTOR;
-    public static final double LADDER_UPPER_MOTOR_SMARTMOTION_MAX_ACCEL = 20000;
-    public static final float LADDER_LOWER_MAX_LENGTH = 95;
+    public static final double LADDER_UPPER_MOTOR_SMARTMOTION_MAX_VELOCITY = 190;
+    public static final double LADDER_UPPER_MOTOR_SMARTMOTION_MAX_ACCEL = 1000;
+    public static final double LADDER_UPPER_MOTOR_SMARTMOTION_ALLOWEDERRORS = 0;
+    public static final double LADDER_UPPER_MAX_LENGTH = 1;
 
 
     public static final double LADDER_MAX_LENGTH = LADDER_LOWER_MAX_LENGTH + LADDER_UPPER_MAX_LENGTH;

@@ -27,7 +27,7 @@ public class LadderControlCommand extends CommandBase {
     public void execute() {
         switch (povLadderSup.getAsInt()){
             case 0:
-                ladderLength+=GRAB_ANGLECONTROL_NUM;
+                ladderLength+=LADDER_POVCONTROL_NUM;
                 timer.start();
                 if(timer.get()>=LADDER_POVCONTROL_WAITTIME&&ladderLength<=LADDER_MAX_LENGTH){
                     ladderLength+=GRAB_ANGLECONTROL_NUM;
@@ -35,10 +35,10 @@ public class LadderControlCommand extends CommandBase {
                 }
                 break;
             case 180:
-                ladderLength-=GRAB_ANGLECONTROL_NUM;
+                ladderLength-=LADDER_POVCONTROL_NUM;
                 timer.start();
                 if(timer.get()>=LADDER_POVCONTROL_WAITTIME&&ladderLength>=0){
-                    ladderLength-=GRAB_ANGLECONTROL_NUM;
+                    ladderLength-=LADDER_POVCONTROL_NUM;
                     timer.restart();
                 }
                 break;
