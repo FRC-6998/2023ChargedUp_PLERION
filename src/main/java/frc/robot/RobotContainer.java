@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.AutoBalanceCommand;
+import frc.robot.commands.GrabAngleControlCommand;
 import frc.robot.commands.LadderControlCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.subsystems.GrabSubsystem;
@@ -53,7 +55,13 @@ public class RobotContainer
 
         ladderSubsystem.setDefaultCommand(new LadderControlCommand(
                 ladderSubsystem,
-                () ->controller_Operator.getPOV()
+                () -> controller_Operator.getPOV()
+        ));
+
+        grabSubsystem.setDefaultCommand(new GrabAngleControlCommand(
+                grabSubsystem,
+                () -> controller_Operator.getYButton(),
+                () -> controller_Operator.getBButton()
         ));
         // Configure the trigger bindings
         configureBindings();
@@ -77,7 +85,12 @@ public class RobotContainer
     }
 
     public Command getAutonomousCommand() {
-        if(pathChooser.getSelected()=="DONT_MOVE"){return null;}
+
+        if(pathChooser.getSelected()=="DONT_MOVE"){
+            return null;
+        } else if (pathChooser.getSelected()=="ONLY_BALANCE") {
+            return new AutoBalanceCommand(swerveSubsystem,false, false);
+        }
 
         List<PathPlannerTrajectory> pathGroup =
                 PathPlanner.loadPathGroup(pathChooser.getSelected(), new PathConstraints(4, 3));
@@ -98,7 +111,6 @@ public class RobotContainer
                 swerveSubsystem // The drive subsystem. Used to properly set the requirements of path following commands
         );
         final Command fullAuto = autoBuilder.fullAuto(pathGroup);
-
         return fullAuto;
     }
 }

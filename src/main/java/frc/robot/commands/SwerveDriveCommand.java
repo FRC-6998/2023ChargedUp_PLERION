@@ -46,15 +46,15 @@ public class SwerveDriveCommand extends CommandBase {
                 break;
             case 45:
                 translationVal = SWERVE_POV_MOVE_SPEED;
-                strafeVal = SWERVE_POV_MOVE_SPEED;
+                strafeVal = -SWERVE_POV_MOVE_SPEED;
                 break;
             case 90:
                 translationVal = 0.0;
-                strafeVal = SWERVE_POV_MOVE_SPEED;
+                strafeVal = -SWERVE_POV_MOVE_SPEED;
                 break;
             case 135:
                 translationVal = -SWERVE_POV_MOVE_SPEED;
-                strafeVal = SWERVE_POV_MOVE_SPEED;
+                strafeVal = -SWERVE_POV_MOVE_SPEED;
                 break;
             case 180:
                 translationVal = -SWERVE_POV_MOVE_SPEED;
@@ -62,15 +62,15 @@ public class SwerveDriveCommand extends CommandBase {
                 break;
             case 225:
                 translationVal = -SWERVE_POV_MOVE_SPEED;
-                strafeVal = -SWERVE_POV_MOVE_SPEED;
+                strafeVal = SWERVE_POV_MOVE_SPEED;
                 break;
             case 270:
                 translationVal = 0.0;
-                strafeVal = -SWERVE_POV_MOVE_SPEED;
+                strafeVal = SWERVE_POV_MOVE_SPEED;
                 break;
             case 315:
                 translationVal = SWERVE_POV_MOVE_SPEED;
-                strafeVal = -SWERVE_POV_MOVE_SPEED;
+                strafeVal = SWERVE_POV_MOVE_SPEED;
                 break;
             default:
                 translationVal = MathUtil.applyDeadband(translationSup.getAsDouble(), SWERVE_DRIVE_JOYSTICK_DEADBAND);

@@ -11,19 +11,22 @@ import static frc.robot.Constants.*;
 
 
 public class AutoBalanceCommand extends CommandBase {
-    private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
+    private final SwerveSubsystem swerveSubsystem;
     private final PIDController pidController = new PIDController(
-            Constants.AUTO_BALANCE_KP,Constants.AUTO_BALANCE_KI,Constants.AUTO_BALANCE_KD);
+            Constants.AUTO_BALANCE_KP, Constants.AUTO_BALANCE_KI, Constants.AUTO_BALANCE_KD);
     private final Timer timer = new Timer();
     private Stage currentStage;
     private final boolean shouldExitWhenFinished;
+    private final boolean startInverted;
 
-    public AutoBalanceCommand(boolean shouldExitWhenFinished) {
+    public AutoBalanceCommand(SwerveSubsystem swerveSubsystem, boolean startInverted, boolean shouldExitWhenFinished) {
         // each subsystem used by the command must be passed into the
         // addRequirements() method (which takes a vararg of Subsystem)
-        addRequirements(this.swerveSubsystem);
-        currentStage = Stage.Created;
+        this.swerveSubsystem = swerveSubsystem;
         this.shouldExitWhenFinished = shouldExitWhenFinished;
+        this.startInverted = startInverted;
+        addRequirements(swerveSubsystem);
+        currentStage = Stage.Created;
     }
 
     @Override
@@ -34,27 +37,31 @@ public class AutoBalanceCommand extends CommandBase {
 
     @Override
     public void execute() {
-        double error = swerveSubsystem.navX.getPitch();
+        double error = swerveSubsystem.navX.getRoll();
         switch (currentStage){
             case Preparing:
-                swerveSubsystem.drive(new Translation2d(0.1, 0).times(SWERVE_MAX_SPEED), 0, false, false);
+                swerveSubsystem.drive(
+                        new Translation2d(startInverted?-AUTO_BALANCE_PREPARING_SPEED:
+                                AUTO_BALANCE_PREPARING_SPEED, 0).times(SWERVE_MAX_SPEED),
+                        0, false, false);
                 if(Math.abs(error)>Constants.AUTO_BALANCE_TOLERANCE){
                     currentStage = Stage.Climb;
                     timer.reset();
                 }
                 break;
             case Climb:
-                swerveSubsystem.drive(new Translation2d(0.1, 0).times(SWERVE_MAX_SPEED),0,false,false);
+                swerveSubsystem.drive(new Translation2d(pidController.calculate(error), 0).times(SWERVE_MAX_SPEED),0,false,false);
                 if(Math.abs(error)<=Constants.AUTO_BALANCE_TOLERANCE){
                     currentStage = Stage.Wait;
                     timer.reset();
                 }
                 break;
             case Wait:
+                swerveSubsystem.drive(new Translation2d(0, 0),0, false, false);
                 if(Math.abs(error)>Constants.AUTO_BALANCE_TOLERANCE){
                     currentStage = Stage.Climb;
                 }else{
-                    if(timer.get()>Constants.AUTO_BALANCE_WAIT_TIME){
+                    if(shouldExitWhenFinished && timer.get()>Constants.AUTO_BALANCE_WAIT_TIME){
                         currentStage = Stage.Finish;
                     }
                 }
@@ -78,6 +85,6 @@ public class AutoBalanceCommand extends CommandBase {
     }
 
     public enum Stage{
-        Created,Preparing,Climb,Wait,Finish
+        Created, Preparing, Climb, Wait, Finish
     }
 }

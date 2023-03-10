@@ -34,9 +34,9 @@ public class LadderSubsystem extends SubsystemBase
     }
     public void setLadderLength(double length){
         ladderMotor_LL.getPIDController().setReference(
-                length * LADDER_LOWER_MAX_LENGTH/LADDER_MAX_LENGTH, CANSparkMax.ControlType.kSmartMotion);
+                length * LADDER_LOWER_MAX_LENGTH/LADDER_MAX_LENGTH, CANSparkMax.ControlType.kPosition);
         ladderMotor_U.getPIDController().setReference(
-                length * LADDER_UPPER_MAX_LENGTH/LADDER_MAX_LENGTH, CANSparkMax.ControlType.kSmartMotion);
+                length * LADDER_UPPER_MAX_LENGTH/LADDER_MAX_LENGTH, CANSparkMax.ControlType.kPosition);
     }
     @Override
     public void periodic()
@@ -63,10 +63,6 @@ public class LadderSubsystem extends SubsystemBase
         ladderMotor_LL.getPIDController().setD(LADDER_LOWER_MOTOR_KD, 0);
         ladderMotor_LL.getPIDController().setFF(LADDER_LOWER_MOTOR_KF,0);
         ladderMotor_LL.getPIDController()
-                .setSmartMotionMaxVelocity(LADDER_LOWER_MOTOR_SMARTMOTION_MAX_VELOCITY,0);
-        ladderMotor_LL.getPIDController()
-                .setSmartMotionMaxAccel(LADDER_LOWER_MOTOR_SMARTMOTION_MAX_ACCEL,0);
-        ladderMotor_LL.getPIDController()
                 .setSmartMotionAllowedClosedLoopError(LADDER_UPPER_MOTOR_SMARTMOTION_ALLOWEDERRORS, 0);
 
         ladderMotor_LR.restoreFactoryDefaults();
@@ -85,10 +81,6 @@ public class LadderSubsystem extends SubsystemBase
         ladderMotor_LR.getPIDController().setD(LADDER_LOWER_MOTOR_KD, 0);
         ladderMotor_LR.getPIDController().setFF(LADDER_LOWER_MOTOR_KF,0);
         ladderMotor_LR.getPIDController()
-                .setSmartMotionMaxVelocity(LADDER_LOWER_MOTOR_SMARTMOTION_MAX_VELOCITY,0);
-        ladderMotor_LR.getPIDController()
-                .setSmartMotionMaxAccel(LADDER_LOWER_MOTOR_SMARTMOTION_MAX_ACCEL,0);
-        ladderMotor_LR.getPIDController()
                 .setSmartMotionAllowedClosedLoopError(LADDER_UPPER_MOTOR_SMARTMOTION_ALLOWEDERRORS, 0);
 
         ladderMotor_LR.follow(ladderMotor_LL, true);
@@ -100,7 +92,7 @@ public class LadderSubsystem extends SubsystemBase
     private void configUpperLadderMotor(){
         ladderMotor_U.restoreFactoryDefaults();
         ladderMotor_U.setInverted(LADDER_UPPER_MOTOR_INVERTED);
-        ladderMotor_U.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, LADDER_LOWER_MAX_LENGTH);
+        ladderMotor_U.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, LADDER_UPPER_MAX_LENGTH);
         ladderMotor_U.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 0);
         ladderMotor_U.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse,true);
         ladderMotor_U.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward,true);

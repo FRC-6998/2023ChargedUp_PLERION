@@ -18,9 +18,7 @@ public class GrabSubsystem extends SubsystemBase
 {
     private final CANSparkMax grab_AngleMotor =
             new CANSparkMax(GRAB_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
-    private final Solenoid Grab = new Solenoid(PNEUMATICS_MODULE_TYPE,GRAB_SOLENOID);
-    private final ArmFeedforward intake_Angle_armFeedforward =
-            new ArmFeedforward(0, 0, 0, 0);
+    private final Solenoid Grab = new Solenoid(PNEUMATICS_MODULE_TYPE, GRAB_SOLENOID);
 
     public GrabSubsystem(){
         configAngleMotor();
@@ -46,6 +44,7 @@ public class GrabSubsystem extends SubsystemBase
         grab_AngleMotor.enableVoltageCompensation(UP_VOLTAGE_COMPENSATION);
         grab_AngleMotor.setIdleMode(GRAB_ANGLE_MOTOR_IDLEMODE);
         grab_AngleMotor.getEncoder().setPositionConversionFactor(GRAB_ANGLE_MOTOR_FACTOR);
+        grab_AngleMotor.getEncoder().setVelocityConversionFactor(GRAB_ANGLE_MOTOR_FACTOR);
         grab_AngleMotor.getPIDController().setP(GRAB_ANGLE_MOTOR_KP, 0);
         grab_AngleMotor.getPIDController().setI(GRAB_ANGLE_MOTOR_KI, 0);
         grab_AngleMotor.getPIDController().setD(GRAB_ANGLE_MOTOR_KD, 0);
@@ -65,9 +64,7 @@ public class GrabSubsystem extends SubsystemBase
     }
 
     public void setGrabAngle(double degree){
-        grab_AngleMotor.getPIDController().setReference(
-                degree, CANSparkMax.ControlType.kSmartMotion, 0,
-                intake_Angle_armFeedforward.calculate(grab_AngleMotor.getEncoder().getPosition(),0));
+        grab_AngleMotor.getPIDController().setReference(degree, CANSparkMax.ControlType.kPosition);
     }
     public void set_Grabing(boolean grab){
         Grab.set(grab);
