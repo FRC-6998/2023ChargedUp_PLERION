@@ -44,7 +44,7 @@ public class AutoBalanceCommand extends CommandBase {
                         new Translation2d(startInverted?-AUTO_BALANCE_PREPARING_SPEED:
                                 AUTO_BALANCE_PREPARING_SPEED, 0).times(SWERVE_MAX_SPEED),
                         0, false, false);
-                if(Math.abs(error)>Constants.AUTO_BALANCE_TOLERANCE){
+                if(Math.abs(error)> AUTO_PREPARE_CHANGENUM){
                     currentStage = Stage.Climb;
                     timer.reset();
                 }

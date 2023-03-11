@@ -2,7 +2,6 @@ package frc.robot.commands;
 
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LadderSubsystem;
 import java.util.function.IntSupplier;
@@ -21,7 +20,7 @@ public class LadderControlCommand extends CommandBase {
 
         addRequirements(ladderSubsystem);
     }
-    public void zeroLadderLength(){ladderLength=0;}
+    public void zeroLadderLength(){ladderLength = 0;}
 
     @Override
     public void execute() {
@@ -47,6 +46,5 @@ public class LadderControlCommand extends CommandBase {
                 break;
         }
         ladderSubsystem.setLadderLength(ladderLength);
-        SmartDashboard.putNumber("A", ladderLength);
     }
 }

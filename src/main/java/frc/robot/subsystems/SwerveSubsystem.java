@@ -37,7 +37,7 @@ public class SwerveSubsystem extends SubsystemBase {
                         SWERVE_RIGHTREAR_DRIVEMOTOR,SWERVE_RIGHTREAR_ANGLEMOTOR,SWERVE_RIGHTREAR_CANCODER,
                         SWERVE_RIGHTREAR_OFFSET),
                 new SwerveModule(
-                        2, SwerveTypeConstants.SDSMK4I_L2(),
+                        2, SwerveTypeConstants.SDSMK4I_L1(),
                         SWERVE_RIGHTFRONT_DRIVEMOTOR,SWERVE_RIGHTFRONT_ANGLEMOTOR,SWERVE_RIGHTFRONT_CANCODER,
                         SWERVE_RIGHTFRONT_OFFSET)
 

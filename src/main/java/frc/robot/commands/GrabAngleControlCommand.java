@@ -2,13 +2,10 @@ package frc.robot.commands;
 
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.GrabSubsystem;
-import frc.robot.subsystems.LadderSubsystem;
 
 import java.util.function.BooleanSupplier;
-import java.util.function.IntSupplier;
 
 import static frc.robot.Constants.*;
 
@@ -17,7 +14,7 @@ public class GrabAngleControlCommand extends CommandBase {
     private final BooleanSupplier grabPlusSup;
     private final BooleanSupplier grabMinusSup;
     private final Timer timer = new Timer();
-    private double grabAngle = 0;
+    private double grabAngle = START_GRAB_ANGLE;
 
     public GrabAngleControlCommand(
             GrabSubsystem grabSubsystem,

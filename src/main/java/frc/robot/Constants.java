@@ -78,9 +78,10 @@ public final class Constants {
     public static final double AUTO_BALANCE_KP = 0.0075;
     public static final double AUTO_BALANCE_KI = 0;
     public static final double AUTO_BALANCE_KD = 0;
-    public static final double AUTO_BALANCE_TOLERANCE = 2;
+    public static final double AUTO_BALANCE_TOLERANCE = 3;
+    public static final double AUTO_PREPARE_CHANGENUM = 15;
     public static final double AUTO_BALANCE_WAIT_TIME = 2;
-    public static final double AUTO_BALANCE_PREPARING_SPEED = 3.5;
+    public static final double AUTO_BALANCE_PREPARING_SPEED = 0.35;
 
     public static final double UP_VOLTAGE_COMPENSATION = 12.0;
 
@@ -130,7 +131,7 @@ public final class Constants {
 
     public static final double LADDER_POVCONTROL_WAITTIME = 1;
     public static final double LADDER_POVCONTROL_NUM = 0.2;
-    public static final double START_GRAB_ANGLE = 90;
+    public static final double START_GRAB_ANGLE = 20;
     public static final double GRAB_ANGLECONTROL_WAITTIME = 0.01;
     public static final double GRAB_ANGLECONTROL_NUM = 1;
 }
