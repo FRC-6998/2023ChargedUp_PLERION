@@ -63,8 +63,8 @@ public final class Constants {
     public static final SwerveDriveKinematics swerveDriveKinematics = new SwerveDriveKinematics(
             new Translation2d(SWERVE_CHASSIS_TRACKWIDTH_METERS / 2.0, SWERVE_CHASSIS_WHEELBASE_METERS / 2.0),
             new Translation2d(-SWERVE_CHASSIS_TRACKWIDTH_METERS / 2.0, SWERVE_CHASSIS_WHEELBASE_METERS / 2.0),
-            new Translation2d(SWERVE_CHASSIS_TRACKWIDTH_METERS / 2.0, -SWERVE_CHASSIS_WHEELBASE_METERS / 2.0),
-            new Translation2d(-SWERVE_CHASSIS_TRACKWIDTH_METERS / 2.0, -SWERVE_CHASSIS_WHEELBASE_METERS / 2.0)
+            new Translation2d(-SWERVE_CHASSIS_TRACKWIDTH_METERS / 2.0, -SWERVE_CHASSIS_WHEELBASE_METERS / 2.0),
+            new Translation2d(SWERVE_CHASSIS_TRACKWIDTH_METERS / 2.0, -SWERVE_CHASSIS_WHEELBASE_METERS / 2.0)
     );
 
     public static final double SWERVE_AUTO_XY_KP = 5.0;
@@ -134,4 +134,13 @@ public final class Constants {
     public static final double START_GRAB_ANGLE = 20;
     public static final double GRAB_ANGLECONTROL_WAITTIME = 0.01;
     public static final double GRAB_ANGLECONTROL_NUM = 1;
+
+    public static final double CUBE_SECOND_LENGTH = 10;
+    public static final double CUBE_THIRD_LENGTH = 10;
+    public static final double CONE_SECOND_LENGTH = 10;
+    public static final double CONE_THIRD_LENGTH = 10;
+    public static final double CUBE_SECOND_ANGLE = 10;
+    public static final double CUBE_THIRD_ANGLE = 10;
+    public static final double CONE_SECOND_ANGLE = 10;
+    public static final double CONE_THIRD_ANGLE = 10;
 }

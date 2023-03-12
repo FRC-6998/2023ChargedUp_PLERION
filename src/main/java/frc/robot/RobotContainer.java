@@ -22,6 +22,7 @@ import frc.robot.subsystems.SwerveSubsystem;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import static frc.robot.Constants.*;
 
@@ -45,19 +46,19 @@ public class RobotContainer
                 () -> -controller_driveX.getRawAxis(XboxController.Axis.kLeftY.value),
                 () -> -controller_driveX.getRawAxis(XboxController.Axis.kLeftX.value),
                 () -> -controller_driveX.getRawAxis(XboxController.Axis.kRightX.value),
-                () -> controller_driveX.getPOV(),
-                () -> controller_driveX.getBackButton()
+                controller_driveX::getPOV,
+                controller_driveX::getBackButton
         ));
 
         ladderSubsystem.setDefaultCommand(new LadderControlCommand(
                 ladderSubsystem,
-                () -> controller_Operator.getPOV()
+                controller_Operator::getPOV
         ));
 
         grabSubsystem.setDefaultCommand(new GrabAngleControlCommand(
                 grabSubsystem,
-                () -> controller_Operator.getYButton(),
-                () -> controller_Operator.getBButton()
+                controller_Operator::getYButton,
+                controller_Operator::getBButton
         ));
         // Configure the trigger bindings
         configureBindings();
@@ -65,6 +66,7 @@ public class RobotContainer
         pathChooser.setDefaultOption("ONLY OUT", "ONLY_OUT");
         pathChooser.addOption("ONLY BALANCE", "ONLY_BALANCE");
         pathChooser.addOption("LONG OUT AND BALANCE", "LONG_OUT_AND_BALANCE");
+        pathChooser.addOption("SHORT OUT AND BALANCE", "SHORT_OUT_AND_BALANCE");
         pathChooser.addOption("DONT MOVE", "DONT_MOVE");
         SmartDashboard.putData("Auto choices", pathChooser);
     }
@@ -75,9 +77,7 @@ public class RobotContainer
         new JoystickButton(controller_driveX, XboxController.Button.kRightBumper.value)
                 .whenPressed(new InstantCommand(swerveSubsystem::zeroGyro));
         new JoystickButton(controller_Operator, XboxController.Button.kX.value)
-                .whileTrue(new InstantCommand(() -> grabSubsystem.set_Grabing(true)));
-        new JoystickButton(controller_Operator, XboxController.Button.kA.value)
-                .whileTrue(new InstantCommand(() -> grabSubsystem.set_Grabing(false)));
+                .whileTrue(new InstantCommand(() -> grabSubsystem.set_Grabing()));
     }
 
     public Command getAutonomousCommand() {
@@ -104,12 +104,11 @@ public class RobotContainer
                     swerveSubsystem // The drive subsystem. Used to properly set the requirements of path following commands
             );
             final Command fullAuto = autoBuilder.fullAuto(pathGroup);
-            if(pathChooser.getSelected()=="LONG_OUT_AND_BALANCE"){
-                final SequentialCommandGroup fullAutoAndBalance = new SequentialCommandGroup(
+            if(Objects.equals(pathChooser.getSelected(), "LONG_OUT_AND_BALANCE|SHORT_OUT_AND_BALANCE")){
+                return new SequentialCommandGroup(
                         fullAuto.withTimeout(6),
                         new AutoBalanceCommand(swerveSubsystem,true, false)
                 );
-                return fullAutoAndBalance;
             }else{return fullAuto;}
         }
     }
