@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
@@ -16,6 +17,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.lib.math.Conversions;
 import frc.lib.util.ModuleState;
 import frc.lib.util.SwerveTypeConstants;
+
+import java.util.Timer;
 
 import static frc.robot.Constants.*;
 import static frc.robot.RobotMap.*;
@@ -89,7 +92,7 @@ public class SwerveModule {
     public void resetToAbsolute(){
         double absolutePosition = getCanCoder().getDegrees() - angleOffSet.getDegrees();
         angleMotorEncoder.setPosition(absolutePosition);
-        //angleCANCoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData,500);
+        angleCANCoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData,500);
     }
 
 
@@ -113,6 +116,7 @@ public class SwerveModule {
         driveFalcon.setInverted(swerveTypeConstants.driveMotorInvert);
         driveFalcon.setNeutralMode(DRIVE_NEUTRAL_MODE);
         driveFalcon.setSelectedSensorPosition(0);
+        driveFalcon.setStatusFramePeriod(StatusFrame.Status_1_General, SWERVE_PERIOD_MS);
     }
 
     private void configAngleMotor(){
@@ -127,6 +131,7 @@ public class SwerveModule {
         angleNEO.setInverted(swerveTypeConstants.angleMotorInvert);
         angleNEO.setIdleMode(ANGLE_NEUTRAL_MODE);
         angleMotorEncoder.setPositionConversionFactor(360 / swerveTypeConstants.angleGearRatio);
+        angleNEO.setPeriodicFramePeriod(CANSparkMaxLowLevel.PeriodicFrame.kStatus0, SWERVE_PERIOD_MS);
 
         angleNEO.burnFlash();
         resetToAbsolute();

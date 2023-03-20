@@ -8,6 +8,9 @@ public class RobotMap {
     public static final PneumaticsModuleType  PNEUMATICS_MODULE_TYPE = PneumaticsModuleType.REVPH;
     public static final SerialPort.Port NAVX_SERIAL_TYPE = SerialPort.Port.kUSB;
 
+    public static final String LIMELIGHT_SIDE_NAME = "limelight-side";
+    public static final String LIMELIGHT_FRONT_NAME = "limelight-front";
+
     public static final int SWERVE_LEFTFRONT_DRIVEMOTOR = 1;
     public static final int SWERVE_LEFTFRONT_ANGLEMOTOR = 1;
     public static final int SWERVE_LEFTFRONT_CANCODER = 1;

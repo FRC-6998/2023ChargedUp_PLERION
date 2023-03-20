@@ -1,10 +1,16 @@
 package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.math.MatBuilder;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.*;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,7 +24,6 @@ public class SwerveSubsystem extends SubsystemBase {
     public SwerveDriveOdometry swerveDriveOdometry;
     public SwerveModule[] swerveModules;
     public AHRS navX;
-
     public SwerveSubsystem(){
         navX = new AHRS(NAVX_SERIAL_TYPE);
         navX.reset();
@@ -81,7 +86,9 @@ public class SwerveSubsystem extends SubsystemBase {
     public Pose2d getPose() {
         return swerveDriveOdometry.getPoseMeters();
     }
-
+    public Rotation2d getRotation2d() {
+        return navX.getRotation2d();
+    }
     public void resetOdometry(Pose2d pose) {
         swerveDriveOdometry.resetPosition(getYaw(), getModulePositions(), pose);
     }
@@ -108,6 +115,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public Rotation2d getYaw() {
         return (NAVX_INVERTED) ? Rotation2d.fromDegrees(360 - navX.getYaw()) : Rotation2d.fromDegrees(navX.getYaw());
+        //return Rotation2d.fromDegrees(navX.getFusedHeading()-NAVX_FUSEDHEADING_OFFSET);
     }
 
     public void resetModulesToAbsolute(){
@@ -119,11 +127,11 @@ public class SwerveSubsystem extends SubsystemBase {
     @Override
     public void periodic(){
         swerveDriveOdometry.update(getYaw(), getModulePositions());
-
         for(SwerveModule mod : swerveModules){
             SmartDashboard.putNumber("Mod " + mod.moduleNum + " CanCoder", mod.getCanCoder().getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNum + " Integrated", mod.getPosition().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNum + " Velocity", mod.getState().speedMetersPerSecond);
         }
+        SmartDashboard.putNumber("A", navX.getRoll());
     }
 }

@@ -4,6 +4,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LadderSubsystem;
+
+import java.util.function.BooleanSupplier;
 import java.util.function.IntSupplier;
 
 import static frc.robot.Constants.*;
@@ -11,19 +13,22 @@ import static frc.robot.Constants.*;
 public class LadderControlCommand extends CommandBase {
     private final LadderSubsystem ladderSubsystem;
     private final IntSupplier povLadderSup;
+    private final BooleanSupplier zeroButtonSup;
     private final Timer timer = new Timer();
-    private double ladderLength = 0;
-
-    public LadderControlCommand(LadderSubsystem ladderSubsystem, IntSupplier povLadderSup) {
+    public double ladderLength = 0;
+    private int ladderFloor = 1;
+    public LadderControlCommand(
+            LadderSubsystem ladderSubsystem, IntSupplier povLadderSup, BooleanSupplier zeroButtonSup) {
         this.ladderSubsystem = ladderSubsystem;
         this.povLadderSup = povLadderSup;
+        this.zeroButtonSup = zeroButtonSup;
 
         addRequirements(ladderSubsystem);
     }
-    public void zeroLadderLength(){ladderLength = 0;}
 
     @Override
     public void execute() {
+        if(zeroButtonSup.getAsBoolean()){ladderLength = 0;}
         switch (povLadderSup.getAsInt()){
             case 0:
                 if(ladderLength <= LADDER_MAX_LENGTH){ladderLength+=LADDER_POVCONTROL_NUM;}

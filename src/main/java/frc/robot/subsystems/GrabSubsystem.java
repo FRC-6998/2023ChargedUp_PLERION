@@ -6,6 +6,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.*;
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -18,6 +19,8 @@ public class GrabSubsystem extends SubsystemBase
     private final CANSparkMax grab_AngleMotor =
             new CANSparkMax(GRAB_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final Solenoid Grab = new Solenoid(PNEUMATICS_MODULE_TYPE, GRAB_SOLENOID);
+    private ArmFeedforward grab_ArmFeedforward = new ArmFeedforward(GRAB_ARMFEEDFORWARD_KS,
+            GRAB_ARMFEEDFORWARD_KG, GRAB_ARMFEEDFORWARD_KV, GRAB_ARMFEEDFORWARD_KA);
     public boolean grab;
 
     public GrabSubsystem(){
@@ -48,7 +51,6 @@ public class GrabSubsystem extends SubsystemBase
         grab_AngleMotor.getPIDController().setP(GRAB_ANGLE_MOTOR_KP, 0);
         grab_AngleMotor.getPIDController().setI(GRAB_ANGLE_MOTOR_KI, 0);
         grab_AngleMotor.getPIDController().setD(GRAB_ANGLE_MOTOR_KD, 0);
-        grab_AngleMotor.getPIDController().setFF(GRAB_ANGLE_MOTOR_KF,0);
         grab_AngleMotor.getPIDController()
                 .setSmartMotionMaxVelocity(GRAB_ANGLE_MOTOR_SMARTMOTION_MAX_VELOCITY,0);
         grab_AngleMotor.getPIDController()
@@ -64,7 +66,8 @@ public class GrabSubsystem extends SubsystemBase
     }
 
     public void setGrabAngle(double degree){
-        grab_AngleMotor.getPIDController().setReference(degree, CANSparkMax.ControlType.kPosition);
+        grab_AngleMotor.getPIDController().setReference(
+                degree, CANSparkMax.ControlType.kPosition, 0, grab_ArmFeedforward.calculate(degree, 0));
     }
     public void set_Grabing(){
         grab = !grab;
