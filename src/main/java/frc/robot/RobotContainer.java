@@ -39,8 +39,6 @@ public class RobotContainer
     private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
     private final LadderSubsystem ladderSubsystem = new LadderSubsystem();
     private final GrabSubsystem grabSubsystem = new GrabSubsystem();
-    private final SwerveEstimatorsystem swerveEstimatorsystem = new SwerveEstimatorsystem(swerveSubsystem);
-
     private final static XboxController controller_driveX = new XboxController(0);
     private final static XboxController controller_Operator = new XboxController(1);
     private final SendableChooser<String> pathChooser = new SendableChooser<>();
@@ -70,24 +68,13 @@ public class RobotContainer
         ));
         // Configure the trigger bindings
         configureBindings();
-        if(DriverStation.getAlliance()==DriverStation.Alliance.Blue){
-            pathChooser.setDefaultOption("ONLY LONG OUT", "BLUE_LONG_ONLY_OUT");
-            pathChooser.setDefaultOption("ONLY SHORT OUT", "BLUE_SHORT_ONLY_OUT");
-            pathChooser.addOption("ONLY BALANCE", "BLUE_ONLY_BALANCE");
-            pathChooser.addOption("LONG OUT AND BALANCE", "BLUE_LONG_OUT_AND_BALANCE");
-            pathChooser.addOption("SHORT OUT AND BALANCE", "BLUE_SHORT_OUT_AND_BALANCE");
-            pathChooser.addOption("DONT MOVE", "BLUE_DONT_MOVE");
-            SmartDashboard.putData("Auto choices", pathChooser);
-        } else if (DriverStation.getAlliance()==DriverStation.Alliance.Red){
-            pathChooser.setDefaultOption("ONLY LONG OUT", "RED_LONG_ONLY_OUT");
-            pathChooser.setDefaultOption("ONLY SHORT OUT", "RED_SHORT_ONLY_OUT");
-            pathChooser.setDefaultOption("ONLY OUT", "RED_ONLY_OUT");
-            pathChooser.addOption("ONLY BALANCE", "RED_ONLY_BALANCE");
-            pathChooser.addOption("LONG OUT AND BALANCE", "RED_LONG_OUT_AND_BALANCE");
-            pathChooser.addOption("SHORT OUT AND BALANCE", "RED_SHORT_OUT_AND_BALANCE");
-            pathChooser.addOption("DONT MOVE", "RED_DONT_MOVE");
-            SmartDashboard.putData("Auto choices", pathChooser);
-        }
+        pathChooser.setDefaultOption("ONLY LONG OUT", "LONG_ONLY_OUT");
+        pathChooser.setDefaultOption("ONLY SHORT OUT", "SHORT_ONLY_OUT");
+        pathChooser.addOption("ONLY BALANCE", "ONLY_BALANCE");
+        pathChooser.addOption("LONG OUT AND BALANCE", "LONG_OUT_AND_BALANCE");
+        pathChooser.addOption("SHORT OUT AND BALANCE", "SHORT_OUT_AND_BALANCE");
+        pathChooser.addOption("DONT MOVE", "DONT_MOVE");
+        SmartDashboard.putData("Auto choices", pathChooser);
     }
 
 
@@ -119,10 +106,9 @@ public class RobotContainer
             eventMap.put("PUT_CUBE_FIRST", new AutoPutCommand("CUBE",1, ladderSubsystem, grabSubsystem));
             eventMap.put("PUT_CUBE_SECOND", new AutoPutCommand("CUBE",2, ladderSubsystem, grabSubsystem));
             eventMap.put("PUT_CUBE_THIRD", new AutoPutCommand("CUBE",3, ladderSubsystem, grabSubsystem));
-            swerveEstimatorsystem.resetSwerveDrivePoseEstimator(pathGroup.get(0).getInitialPose());
             // Create the AutoBuilder. This only needs to be created once when robot code starts, not every time you want to create an auto command. A good place to put this is in RobotContainer along with your subsystems.
             SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
-                    swerveEstimatorsystem.swerveDrivePoseEstimator::getEstimatedPosition, // Pose2d supplier
+                    swerveSubsystem::getPose, // Pose2d supplier
                     swerveSubsystem::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of auto
                     swerveDriveKinematics, // SwerveDriveKinematics
                     new PIDConstants(SWERVE_AUTO_XY_KP, SWERVE_AUTO_XY_KI, SWERVE_AUTO_XY_KD), // PID constants to correct for translation error (used to create the X and Y PID controllers)
@@ -133,7 +119,7 @@ public class RobotContainer
                     swerveSubsystem // The drive subsystem. Used to properly set the requirements of path following commands
             );
             final Command fullAuto = autoBuilder.fullAuto(pathGroup);
-            if(pathChooser.getSelected()=="RED_LONG_OUT_AND_BALANCE"||pathChooser.getSelected()=="RED_SHORT_OUT_AND_BALANCE"||pathChooser.getSelected()=="BLUE_LONG_OUT_AND_BALANCE"||pathChooser.getSelected()=="BLUE_SHORT_OUT_AND_BALANCE"){
+            if(pathChooser.getSelected()=="LONG_OUT_AND_BALANCE"||pathChooser.getSelected()=="SHORT_OUT_AND_BALANCE"){
                 return new SequentialCommandGroup(
                         fullAuto.withTimeout(8),
                         new AutoBalanceCommand(swerveSubsystem,false, false)
