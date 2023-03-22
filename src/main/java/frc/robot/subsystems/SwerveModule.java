@@ -74,11 +74,17 @@ public class SwerveModule {
             driveFalcon.set(ControlMode.Velocity, velocity, DemandType.ArbitraryFeedForward, feedforward.calculate(desiredState.speedMetersPerSecond));
         }
     }
+    public void setNoMove(){
+        driveFalcon.set(ControlMode.Velocity, 0);
+    }
 
     private void setAngle(SwerveModuleState desiredState){
         Rotation2d angle = (Math.abs(desiredState.speedMetersPerSecond) <= (SWERVE_MAX_SPEED * 0.01)) ? lastAngle : desiredState.angle; //Prevent rotating module if speed is less then 1%. Prevents Jittering.
         angleNEO.getPIDController().setReference(angle.getDegrees(), CANSparkMax.ControlType.kPosition);
         lastAngle = angle;
+    }
+    public void setNoFilterAngle(double angle){
+        angleNEO.getPIDController().setReference(angle, CANSparkMax.ControlType.kPosition);
     }
 
     private Rotation2d getAngle(){

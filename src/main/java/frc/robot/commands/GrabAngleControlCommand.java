@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.GrabSubsystem;
 
@@ -31,19 +32,20 @@ public class GrabAngleControlCommand extends CommandBase {
         if (grabPlusSup.getAsBoolean()) {
             if(grabAngle <= GRAB_ANGLE_LIMIT){grabAngle+=GRAB_ANGLECONTROL_NUM;}
             timer.start();
-            if (timer.get() >= GRAB_ANGLECONTROL_WAITTIME && grabAngle >= GRAB_ANGLE_LIMIT) {
+            if (timer.get() >= GRAB_ANGLECONTROL_WAITTIME && grabAngle <= GRAB_ANGLE_LIMIT) {
                 grabAngle += GRAB_ANGLECONTROL_NUM;
                 timer.restart();
             }
         } else if (grabMinusSup.getAsBoolean()) {
             if(grabAngle >= 0){grabAngle-=GRAB_ANGLECONTROL_NUM;}
             timer.start();
-            if (timer.get() >= GRAB_ANGLECONTROL_WAITTIME && grabAngle <= GRAB_ANGLE_LIMIT) {
+            if (timer.get() >= GRAB_ANGLECONTROL_WAITTIME && grabAngle <= 0) {
                 grabAngle -= GRAB_ANGLECONTROL_NUM;
                 timer.restart();
             }
         }
         grabSubsystem.setGrabAngle(grabAngle);
+        SmartDashboard.putNumber("Grab_Angle", grabAngle);
     }
 }
 

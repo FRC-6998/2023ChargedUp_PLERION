@@ -1,7 +1,9 @@
 package frc.robot.commands;
 
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LadderSubsystem;
 
@@ -15,7 +17,7 @@ public class LadderControlCommand extends CommandBase {
     private final IntSupplier povLadderSup;
     private final BooleanSupplier zeroButtonSup;
     private final Timer timer = new Timer();
-    public double ladderLength = 0;
+    private double ladderLength = 0;
     private int ladderFloor = 1;
     public LadderControlCommand(
             LadderSubsystem ladderSubsystem, IntSupplier povLadderSup, BooleanSupplier zeroButtonSup) {
@@ -50,6 +52,7 @@ public class LadderControlCommand extends CommandBase {
                 timer.reset();
                 break;
         }
-        ladderSubsystem.setLadderLength(ladderLength);
+        if(DriverStation.isTeleopEnabled()){ladderSubsystem.setLadderLength(ladderLength);}
+        SmartDashboard.putNumber("ladderLength", ladderLength);
     }
 }

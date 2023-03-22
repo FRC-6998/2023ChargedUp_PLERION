@@ -10,13 +10,7 @@ import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
@@ -26,9 +20,7 @@ import frc.robot.commands.Autos.AutoBalanceCommand;
 import frc.robot.commands.Autos.AutoPutCommand;
 import frc.robot.subsystems.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static frc.robot.Constants.*;
 
@@ -39,6 +31,7 @@ public class RobotContainer
     private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
     private final LadderSubsystem ladderSubsystem = new LadderSubsystem();
     private final GrabSubsystem grabSubsystem = new GrabSubsystem();
+    private final SwerveEstimatorsystem swerveEstimatorsystem = new SwerveEstimatorsystem(swerveSubsystem);
     private final static XboxController controller_driveX = new XboxController(0);
     private final static XboxController controller_Operator = new XboxController(1);
     private final SendableChooser<String> pathChooser = new SendableChooser<>();
@@ -68,12 +61,20 @@ public class RobotContainer
         ));
         // Configure the trigger bindings
         configureBindings();
-        pathChooser.setDefaultOption("ONLY LONG OUT", "LONG_ONLY_OUT");
-        pathChooser.setDefaultOption("ONLY SHORT OUT", "SHORT_ONLY_OUT");
+        pathChooser.setDefaultOption("ONLY OUT", "ONLY_OUT");
         pathChooser.addOption("ONLY BALANCE", "ONLY_BALANCE");
+        pathChooser.addOption("MIDDLE OUT AND BALANCE", "MIDDLE_OUT_AND_BALANCE");
         pathChooser.addOption("LONG OUT AND BALANCE", "LONG_OUT_AND_BALANCE");
         pathChooser.addOption("SHORT OUT AND BALANCE", "SHORT_OUT_AND_BALANCE");
         pathChooser.addOption("DONT MOVE", "DONT_MOVE");
+        pathChooser.addOption("JUST PUT CUBE", "JUST_PUT_CUBE");
+        pathChooser.addOption("PUT CUBE AND BALANCE", "PUT_CUBE_AND_BALANCE");
+        pathChooser.addOption("PUT CUBE AND MIDDLE OUT", "PUT_CUBE_AND_MIDDLE_OUT");
+        pathChooser.addOption("PUT CUBE AND LONG OUT", "PUT_CUBE_AND_LONG_OUT");
+        pathChooser.addOption("PUT CUBE AND SHORT OUT", "PUT_CUBE_AND_SHORT_OUT");
+        pathChooser.addOption("PUT CUBE AND MIDDLE OUT THEN BALANCE", "PUT_CUBE_AND_MIDDLE_OUT_AND_BALANCE");
+        pathChooser.addOption("PUT CUBE AND LONG OUT THEN BALANCE", "PUT_CUBE_AND_LONG_OUT_AND_BALANCE");
+        pathChooser.addOption("PUT CUBE AND SHORT OUT THEN BALANCE", "PUT_CUBE_AND_SHORT_OUT_AND_BALANCE");
         SmartDashboard.putData("Auto choices", pathChooser);
     }
 
@@ -84,47 +85,81 @@ public class RobotContainer
                 .onTrue(new InstantCommand(swerveSubsystem::zeroGyro));
         new JoystickButton(controller_Operator, XboxController.Button.kX.value)
                 .onTrue(new InstantCommand(grabSubsystem::set_Grabing));
+        new JoystickButton(controller_driveX, XboxController.Button.kA.value)
+                .onTrue(new InstantCommand(swerveSubsystem::setBrakingForCharge));
     }
 
     public void robotInit() {
     }
 
     public Command getAutonomousCommand() {
-        if(pathChooser.getSelected()=="DONT_MOVE"){
-            return null;
-        } else if (pathChooser.getSelected()=="BLUE_ONLY_BALANCE"||pathChooser.getSelected()=="RED_ONLY_BALANCE") {
-            return new AutoBalanceCommand(swerveSubsystem,true, false);
-        } else  {
-            List<PathPlannerTrajectory> pathGroup =
-                    PathPlanner.loadPathGroup(pathChooser.getSelected(), new PathConstraints(4, 3));
-            // This is just an example event map. It would be better to have a constant, global event map
-            // in your code that will be used by all path following commands
-            HashMap<String, Command> eventMap = new HashMap<>();
-            eventMap.put("PUT_CONE_FIRST", new AutoPutCommand("CONE",1, ladderSubsystem, grabSubsystem));
-            eventMap.put("PUT_CONE_SECOND", new AutoPutCommand("CONE",2, ladderSubsystem, grabSubsystem));
-            eventMap.put("PUT_CONE_THIRD", new AutoPutCommand("CONE",3, ladderSubsystem, grabSubsystem));
-            eventMap.put("PUT_CUBE_FIRST", new AutoPutCommand("CUBE",1, ladderSubsystem, grabSubsystem));
-            eventMap.put("PUT_CUBE_SECOND", new AutoPutCommand("CUBE",2, ladderSubsystem, grabSubsystem));
-            eventMap.put("PUT_CUBE_THIRD", new AutoPutCommand("CUBE",3, ladderSubsystem, grabSubsystem));
-            // Create the AutoBuilder. This only needs to be created once when robot code starts, not every time you want to create an auto command. A good place to put this is in RobotContainer along with your subsystems.
-            SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
-                    swerveSubsystem::getPose, // Pose2d supplier
-                    swerveSubsystem::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of auto
-                    swerveDriveKinematics, // SwerveDriveKinematics
-                    new PIDConstants(SWERVE_AUTO_XY_KP, SWERVE_AUTO_XY_KI, SWERVE_AUTO_XY_KD), // PID constants to correct for translation error (used to create the X and Y PID controllers)
-                    new PIDConstants(SWERVE_AUTO_Z_KP, SWERVE_AUTO_Z_KI, SWERVE_AUTO_Z_KD), // PID constants to correct for rotation error (used to create the rotation controller)
-                    swerveSubsystem::setModuleStates, // Module states consumer used to output to the drive subsystem
-                    eventMap,
-                    false, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
-                    swerveSubsystem // The drive subsystem. Used to properly set the requirements of path following commands
-            );
-            final Command fullAuto = autoBuilder.fullAuto(pathGroup);
-            if(pathChooser.getSelected()=="LONG_OUT_AND_BALANCE"||pathChooser.getSelected()=="SHORT_OUT_AND_BALANCE"){
+        Command autoPut = new SequentialCommandGroup(
+                new ParallelCommandGroup(
+                        new InstantCommand(() -> ladderSubsystem.setLadderLength(3)),
+                        new InstantCommand(() -> grabSubsystem.setGrabAngle(90))
+                ),
+                new DelayCommand(3),
+                new InstantCommand(() -> grabSubsystem.grab = true),
+                new DelayCommand(1),
+                new ParallelCommandGroup(
+                        new InstantCommand(() -> ladderSubsystem.setLadderLength(0)),
+                        new InstantCommand(() -> grabSubsystem.setGrabAngle(30))
+                ),
+                new DelayCommand(1)
+        );
+        String autoChosen = pathChooser.getSelected();
+        switch (autoChosen) {
+            case "DONT_MOVE":
+                return null;
+            case "ONLY_BALANCE":
+                return new AutoBalanceCommand(swerveSubsystem, true, false);
+            case "JUST_PUT_CUBE":
+                return autoPut;
+            case "PUT_CUBE_AND_BALANCE":
                 return new SequentialCommandGroup(
-                        fullAuto.withTimeout(8),
-                        new AutoBalanceCommand(swerveSubsystem,false, false)
+                        new AutoPutCommand(ladderSubsystem, grabSubsystem),
+                        new AutoBalanceCommand(swerveSubsystem, true, false));
+            default:
+                List<String> middleOutAndBalance = Arrays.asList("PUT_CUBE_AND_MIDDLE_OUT_AND_BALANCE", "PUT_CUBE_AND_MIDDLE_OUT", "MIDDLE_OUT_AND_BALANCE");
+                List<PathPlannerTrajectory> pathGroup;
+                if (middleOutAndBalance.contains(autoChosen)) {
+                    pathGroup =
+                            PathPlanner.loadPathGroup(pathChooser.getSelected(), new PathConstraints(0.5, 3));
+                } else{
+                    pathGroup =
+                            PathPlanner.loadPathGroup(pathChooser.getSelected(), new PathConstraints(4, 3));}
+                // This is just an example event map. It would be better to have a constant, global event map
+                // in your code that will be used by all path following commands
+                HashMap<String, Command> eventMap = new HashMap<>();
+                // Create the AutoBuilder. This only needs to be created once when robot code starts, not every time you want to create an auto command. A good place to put this is in RobotContainer along with your subsystems.
+                SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
+                        swerveSubsystem::getPose, // Pose2d supplier
+                        swerveSubsystem::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of auto
+                        swerveDriveKinematics, // SwerveDriveKinematics
+                        new PIDConstants(SWERVE_AUTO_XY_KP, SWERVE_AUTO_XY_KI, SWERVE_AUTO_XY_KD), // PID constants to correct for translation error (used to create the X and Y PID controllers)
+                        new PIDConstants(SWERVE_AUTO_Z_KP, SWERVE_AUTO_Z_KI, SWERVE_AUTO_Z_KD), // PID constants to correct for rotation error (used to create the rotation controller)
+                        swerveSubsystem::setModuleStates, // Module states consumer used to output to the drive subsystem
+                        eventMap,
+                        false, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+                        swerveSubsystem // The drive subsystem. Used to properly set the requirements of path following commands
                 );
-            }else{return fullAuto;}
+                final Command fullAuto = autoBuilder.fullAuto(pathGroup);
+                List<String> putGO = Arrays.asList("PUT_CUBE_AND_MIDDLE_OUT", "PUT_CUBE_AND_LONG_OUT", "PUT_CUBE_AND_SHORT_OUT");
+                List<String> putGOBalance = Arrays.asList( "PUT_CUBE_AND_LONG_OUT_AND_BALANCE", "PUT_CUBE_AND_SHORT_OUT_AND_BALANCE");
+                List<String> GOBalance = Arrays.asList( "LONG_OUT_AND_BALANCE", "SHORT_OUT_AND_BALANCE", "PUT_CUBE_AND_BALANCE", "MIDDLE_OUT_AND_BALANCE");
+                if (putGO.contains(autoChosen)) {
+                    return new SequentialCommandGroup
+                            (new AutoPutCommand(ladderSubsystem, grabSubsystem), fullAuto.withTimeout(8));
+                } else if (putGOBalance.contains(autoChosen)) {
+                    return new SequentialCommandGroup(
+                            new AutoPutCommand(ladderSubsystem, grabSubsystem), fullAuto.withTimeout(8),
+                            new AutoBalanceCommand(swerveSubsystem, false, false));
+                } else if (GOBalance.contains(autoChosen)) {
+                    return new SequentialCommandGroup(
+                            fullAuto.withTimeout(8),
+                            new AutoBalanceCommand(swerveSubsystem, false, false));
+                } else {return fullAuto;}
+
         }
     }
 }

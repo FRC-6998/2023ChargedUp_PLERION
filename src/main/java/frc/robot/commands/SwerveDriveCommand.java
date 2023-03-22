@@ -17,7 +17,6 @@ public class SwerveDriveCommand extends CommandBase {
     private final DoubleSupplier rotationSup;
     private final BooleanSupplier robotCentricSup;
     private final IntSupplier povSlowMoveSup;
-
     public SwerveDriveCommand(
             SwerveSubsystem swerveSubsystem, DoubleSupplier translationSup,
             DoubleSupplier strafeSup, DoubleSupplier rotationSup,
@@ -31,7 +30,6 @@ public class SwerveDriveCommand extends CommandBase {
         this.robotCentricSup = robotCentricSup;
         this.povSlowMoveSup = povSlowMoveSup;
     }
-
     @Override
     public void execute() {
         /* Get Values, Deadband*/
@@ -75,12 +73,12 @@ public class SwerveDriveCommand extends CommandBase {
                 translationVal = MathUtil.applyDeadband(translationSup.getAsDouble(), SWERVE_DRIVE_JOYSTICK_DEADBAND);
                 strafeVal = MathUtil.applyDeadband(strafeSup.getAsDouble(), SWERVE_DRIVE_JOYSTICK_DEADBAND);
         }
-        /* Drive */
-        swerveSubsystem.drive(
-                new Translation2d(translationVal, strafeVal).times(SWERVE_MAX_SPEED),
-                rotationVal * SWERVE_MAX_ANGULAR_VELOCITY,
-                !robotCentricSup.getAsBoolean(),
-                true
-        );
-    }
+            /* Drive */
+            swerveSubsystem.drive(
+                    new Translation2d(translationVal, strafeVal).times(SWERVE_MAX_SPEED),
+                    rotationVal * SWERVE_MAX_ANGULAR_VELOCITY,
+                    !robotCentricSup.getAsBoolean(),
+                    true
+            );
+        }
 }

@@ -80,9 +80,9 @@ public final class Constants {
     public static final double AUTO_BALANCE_KI = 0;
     public static final double AUTO_BALANCE_KD = 0;
     public static final double AUTO_BALANCE_TOLERANCE = 1.5;
-    public static final double AUTO_PREPARE_CHANGENUM = 3;
+    public static final double AUTO_PREPARE_CHANGENUM = 7;
     public static final double AUTO_BALANCE_WAIT_TIME = 2;
-    public static final double AUTO_BALANCE_PREPARING_SPEED = 0.25;
+    public static final double AUTO_BALANCE_PREPARING_SPEED = 0.35;
 
     public static final double UP_VOLTAGE_COMPENSATION = 12.0;
 
@@ -152,5 +152,5 @@ public final class Constants {
     public static final double LADDER_FAST_PUT_SECOND_LENGTH = 10;
     public static final double LADDER_FAST_PUT_THIRD_LENGTH = 10;
 
-    public static final double VISION_POSE_TRUST_WORTHINESS = 0.8;
+    public static final double VISION_POSE_TRUST_WORTHINESS = 1;
 }

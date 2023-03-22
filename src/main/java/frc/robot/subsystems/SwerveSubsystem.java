@@ -1,17 +1,10 @@
 package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.math.MatBuilder;
-import edu.wpi.first.math.Matrix;
-import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.*;
-import edu.wpi.first.math.numbers.N1;
-import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -24,6 +17,7 @@ public class SwerveSubsystem extends SubsystemBase {
     public SwerveDriveOdometry swerveDriveOdometry;
     public SwerveModule[] swerveModules;
     public AHRS navX;
+    private boolean isBrakeForCharge = false;
     public SwerveSubsystem(){
         navX = new AHRS(NAVX_SERIAL_TYPE);
         navX.reset();
@@ -69,9 +63,12 @@ public class SwerveSubsystem extends SubsystemBase {
                 );
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, SWERVE_MAX_SPEED);
 
-        for(SwerveModule mod : swerveModules){
-            mod.setDesiredState(swerveModuleStates[mod.moduleNum], isOpenLoop);
+        if(!isBrakeForCharge){
+            for(SwerveModule mod : swerveModules){
+                mod.setDesiredState(swerveModuleStates[mod.moduleNum], isOpenLoop);
+            }
         }
+
     }
 
     /* Used by SwerveControllerCommand in Auto */
@@ -124,8 +121,20 @@ public class SwerveSubsystem extends SubsystemBase {
         }
     }
 
+    public void setBrakingForCharge(){isBrakeForCharge = !isBrakeForCharge;}
+    private void brakeForCharge(){
+        swerveModules[0].setNoFilterAngle(45);
+        swerveModules[1].setNoFilterAngle(135);
+        swerveModules[2].setNoFilterAngle(45);
+        swerveModules[3].setNoFilterAngle(135);
+        for(SwerveModule mod : swerveModules){
+            mod.setNoMove();
+        }
+    }
+
     @Override
     public void periodic(){
+        if(isBrakeForCharge){brakeForCharge();}
         swerveDriveOdometry.update(getYaw(), getModulePositions());
         for(SwerveModule mod : swerveModules){
             SmartDashboard.putNumber("Mod " + mod.moduleNum + " CanCoder", mod.getCanCoder().getDegrees());

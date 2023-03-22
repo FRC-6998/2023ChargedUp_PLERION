@@ -21,7 +21,7 @@ public class GrabSubsystem extends SubsystemBase
     private final Solenoid Grab = new Solenoid(PNEUMATICS_MODULE_TYPE, GRAB_SOLENOID);
     private ArmFeedforward grab_ArmFeedforward = new ArmFeedforward(GRAB_ARMFEEDFORWARD_KS,
             GRAB_ARMFEEDFORWARD_KG, GRAB_ARMFEEDFORWARD_KV, GRAB_ARMFEEDFORWARD_KA);
-    public boolean grab;
+    public boolean grab = false;
 
     public GrabSubsystem(){
         configAngleMotor();
@@ -71,10 +71,10 @@ public class GrabSubsystem extends SubsystemBase
     }
     public void set_Grabing(){
         grab = !grab;
-        Grab.set(grab);
     }
     @Override
     public void periodic()
     {
+        Grab.set(grab);
     }
 }
