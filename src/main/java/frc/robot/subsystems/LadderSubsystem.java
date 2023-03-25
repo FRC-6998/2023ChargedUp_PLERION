@@ -26,11 +26,18 @@ public class LadderSubsystem extends SubsystemBase
         configLowerLadderMotor();
         configUpperLadderMotor();
     }
-    private boolean ladderZeroing = false;
+    private boolean UpperladderZeroing = false;
+    private boolean LowerladderZeroing = false;
     private void setLadderZeroing(){
-        if(!ladderZeroing&&!ladderMotor_LL.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed).isPressed()){
-            ladderZeroing = true;
+        if(!LowerladderZeroing&&!ladderMotor_LL.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed).isPressed()){
+            ladderMotor_LL.getEncoder().setPosition(0);
+            ladderMotor_LR.getEncoder().setPosition(0);
+            LowerladderZeroing = true;
         }
+//        if(!UpperladderZeroing&&!grabSubsystem.grab_AngleMotor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed).isPressed()){
+//            ladderMotor_U.getEncoder().setPosition(0);
+//            UpperladderZeroing = true;
+//        }
     }
     public void setLadderLength(double length){
         ladderMotor_LL.getPIDController().setReference(

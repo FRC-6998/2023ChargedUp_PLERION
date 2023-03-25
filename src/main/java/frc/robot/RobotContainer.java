@@ -93,6 +93,7 @@ public class RobotContainer
     }
 
     public Command getAutonomousCommand() {
+        swerveSubsystem.setNavXYaw(180);
         Command autoPut = new SequentialCommandGroup(
                 new ParallelCommandGroup(
                         new InstantCommand(() -> ladderSubsystem.setLadderLength(3)),

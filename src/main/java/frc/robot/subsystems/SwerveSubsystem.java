@@ -109,6 +109,9 @@ public class SwerveSubsystem extends SubsystemBase {
     public void zeroGyro(){
         navX.reset();
     }
+    public void setNavXYaw(double yaw){
+        navX.setAngleAdjustment(yaw);
+    }
 
     public Rotation2d getYaw() {
         return (NAVX_INVERTED) ? Rotation2d.fromDegrees(360 - navX.getYaw()) : Rotation2d.fromDegrees(navX.getYaw());

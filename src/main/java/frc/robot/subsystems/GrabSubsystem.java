@@ -16,7 +16,7 @@ import static frc.robot.RobotMap.*;
 
 public class GrabSubsystem extends SubsystemBase
 {
-    private final CANSparkMax grab_AngleMotor =
+    public final CANSparkMax grab_AngleMotor =
             new CANSparkMax(GRAB_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final Solenoid Grab = new Solenoid(PNEUMATICS_MODULE_TYPE, GRAB_SOLENOID);
     private ArmFeedforward grab_ArmFeedforward = new ArmFeedforward(GRAB_ARMFEEDFORWARD_KS,
@@ -39,6 +39,8 @@ public class GrabSubsystem extends SubsystemBase
     private void configAngleMotor(){
         grab_AngleMotor.restoreFactoryDefaults();
         grab_AngleMotor.setInverted(GRAB_ANGLE_MOTOR_INVERTED);
+        grab_AngleMotor
+                .getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed).enableLimitSwitch(false);
         grab_AngleMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, GRAB_ANGLE_LIMIT);
         grab_AngleMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 0);
         grab_AngleMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse,true);

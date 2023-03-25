@@ -14,10 +14,10 @@ import edu.wpi.first.math.util.Units;
 
 public final class Constants {
     public static final double NAVX_FUSEDHEADING_OFFSET = 354.72;
-    public static final Rotation2d SWERVE_LEFTFRONT_OFFSET = Rotation2d.fromDegrees(41.923828125);//wait for test
-    public static final Rotation2d SWERVE_LEFTREAR_OFFSET = Rotation2d.fromDegrees(189.755859375);
-    public static final Rotation2d SWERVE_RIGHTFRONT_OFFSET = Rotation2d.fromDegrees(251.19140625);
-    public static final Rotation2d SWERVE_RIGHTREAR_OFFSET = Rotation2d.fromDegrees(2.109375);
+    public static final Rotation2d SWERVE_LEFTFRONT_OFFSET = Rotation2d.fromDegrees(169.365234375+180);//wait for test
+    public static final Rotation2d SWERVE_LEFTREAR_OFFSET = Rotation2d.fromDegrees(241.61132812500003-180);
+    public static final Rotation2d SWERVE_RIGHTFRONT_OFFSET = Rotation2d.fromDegrees(253.38867187499997-180);
+    public static final Rotation2d SWERVE_RIGHTREAR_OFFSET = Rotation2d.fromDegrees(45.70312500000001);
 
     public static final double SWERVE_CHASSIS_TRACKWIDTH_METERS = 0.62865;
     public static final double SWERVE_CHASSIS_WHEELBASE_METERS = 0.62865;
@@ -102,7 +102,7 @@ public final class Constants {
     public static final double GRAB_ANGLE_MOTOR_SMARTMOTION_MAX_ACCEL = 5870 * GRAB_ANGLE_MOTOR_FACTOR;
     public static final boolean GRAB_ABSOLUTE_ENCODER_INVERTED = true;
     public static final double GRAB_ABSOLUTE_ENCODER_FACTOR = 360.0;
-    public static final double GRAB_ABSOLUTE_ENCODER_OFFSET = 287.353;
+    public static final double GRAB_ABSOLUTE_ENCODER_OFFSET = 290;
     public static final float GRAB_ANGLE_LIMIT = 110;
 
 
@@ -114,11 +114,11 @@ public final class Constants {
     public static final double LADDER_LOWER_MOTOR_KI = 0.0;
     public static final double LADDER_LOWER_MOTOR_KD = 0.20268;
     public static final double LADDER_LOWER_MOTOR_KF = 0.00535714286;
-    public static final float LADDER_LOWER_MAX_LENGTH = 3.79510f;
+    public static final float LADDER_LOWER_MAX_LENGTH = 3.500f;
 
     public static final boolean LADDER_UPPER_MOTOR_INVERTED = false;
     public static final int LADDER_UPPER_MOTOR_CURRENTLIMIT = 35;
-    public static final double LADDER_UPPER_MOTOR_FACTOR = 1/21.0;
+    public static final double LADDER_UPPER_MOTOR_FACTOR = 1/35.0;
     public static final CANSparkMax.IdleMode LADDER_UPPER_MOTOR_IDLEMODE = CANSparkMax.IdleMode.kBrake;
     public static final double LADDER_UPPER_MOTOR_KP = 1.31380952;
     public static final double LADDER_UPPER_MOTOR_KI = 0.0;
@@ -127,7 +127,7 @@ public final class Constants {
     public static final double LADDER_UPPER_MOTOR_SMARTMOTION_MAX_VELOCITY = 190;
     public static final double LADDER_UPPER_MOTOR_SMARTMOTION_MAX_ACCEL = 1000;
     public static final double LADDER_UPPER_MOTOR_SMARTMOTION_ALLOWEDERRORS = 0;
-    public static final float LADDER_UPPER_MAX_LENGTH = 2.55f;
+    public static final float LADDER_UPPER_MAX_LENGTH = 2.45f;
 
 
     public static final double LADDER_MAX_LENGTH = LADDER_LOWER_MAX_LENGTH + LADDER_UPPER_MAX_LENGTH;

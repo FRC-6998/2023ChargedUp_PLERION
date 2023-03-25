@@ -61,10 +61,8 @@ public class SwerveEstimatorsystem extends SubsystemBase {
         try {
             Pose2d visionPose = LimelightHelpers.getBotPose2d_wpiBlue(LIMELIGHT_SIDE_NAME);
             double latency = Timer.getFPGATimestamp() - (LimelightHelpers.getBotPose(LIMELIGHT_SIDE_NAME)[6]/1000.0);
-            if(swerveDrivePoseEstimator.getEstimatedPosition().getX()>=0.1&&swerveDrivePoseEstimator.getEstimatedPosition().getY()>=0.1&&swerveDrivePoseEstimator.getEstimatedPosition().getRotation().getDegrees()>=0.1){
                 swerveDrivePoseEstimator.addVisionMeasurement(visionPose, latency,
                         visionMeasurementStdDevs_limelightSide.times(1.0 / VISION_POSE_TRUST_WORTHINESS));
-            }
         } catch (Exception e) {}
 
     }
