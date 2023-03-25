@@ -15,7 +15,7 @@ public class AutoPutCommand extends CommandBase {
     public AutoPutCommand(LadderSubsystem ladderSubsystem, GrabSubsystem grabSubsystem){
         new SequentialCommandGroup(
                 new ParallelCommandGroup(
-                        new InstantCommand(() -> ladderSubsystem.setLadderLength(3)),
+                        new InstantCommand(() -> ladderSubsystem.setLadderLength(4)),
                         new InstantCommand(() -> grabSubsystem.setGrabAngle(90))
                 ),
                 new DelayCommand(2),

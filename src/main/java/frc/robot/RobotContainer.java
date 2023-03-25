@@ -35,6 +35,7 @@ public class RobotContainer
     private final static XboxController controller_driveX = new XboxController(0);
     private final static XboxController controller_Operator = new XboxController(1);
     private final SendableChooser<String> pathChooser = new SendableChooser<>();
+    private boolean hasAutoRun = false;
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
@@ -94,6 +95,7 @@ public class RobotContainer
 
     public Command getAutonomousCommand() {
         swerveSubsystem.setNavXYaw(180);
+        hasAutoRun = true;
         Command autoPut = new SequentialCommandGroup(
                 new ParallelCommandGroup(
                         new InstantCommand(() -> ladderSubsystem.setLadderLength(3)),
@@ -145,19 +147,27 @@ public class RobotContainer
                         swerveSubsystem // The drive subsystem. Used to properly set the requirements of path following commands
                 );
                 final Command fullAuto = autoBuilder.fullAuto(pathGroup);
-                List<String> putGO = Arrays.asList("PUT_CUBE_AND_MIDDLE_OUT", "PUT_CUBE_AND_LONG_OUT", "PUT_CUBE_AND_SHORT_OUT");
+                List<String> putGO = Arrays.asList("PUT_CUBE_AND_LONG_OUT", "PUT_CUBE_AND_SHORT_OUT");
                 List<String> putGOBalance = Arrays.asList( "PUT_CUBE_AND_LONG_OUT_AND_BALANCE", "PUT_CUBE_AND_SHORT_OUT_AND_BALANCE");
-                List<String> GOBalance = Arrays.asList( "LONG_OUT_AND_BALANCE", "SHORT_OUT_AND_BALANCE", "PUT_CUBE_AND_BALANCE", "MIDDLE_OUT_AND_BALANCE");
+                List<String> GOBalance = Arrays.asList( "LONG_OUT_AND_BALANCE", "SHORT_OUT_AND_BALANCE", "PUT_CUBE_AND_BALANCE");
                 if (putGO.contains(autoChosen)) {
                     return new SequentialCommandGroup
-                            (new AutoPutCommand(ladderSubsystem, grabSubsystem), fullAuto.withTimeout(8));
+                            (new AutoPutCommand(ladderSubsystem, grabSubsystem), fullAuto.withTimeout(4.25));
+                } else if (autoChosen=="PUT_CUBE_AND_MIDDLE_OUT") {
+                    return new SequentialCommandGroup(
+                            new AutoPutCommand(ladderSubsystem, grabSubsystem), fullAuto.withTimeout(7),
+                            new AutoBalanceCommand(swerveSubsystem, false, false));
+                } else if(autoChosen=="PUT_CUBE_AND_MIDDLE_OUT_AND_BALANCE"){
+                    return new SequentialCommandGroup(
+                            new AutoPutCommand(ladderSubsystem, grabSubsystem), fullAuto.withTimeout(7),
+                            new AutoBalanceCommand(swerveSubsystem, false, false));
                 } else if (putGOBalance.contains(autoChosen)) {
                     return new SequentialCommandGroup(
-                            new AutoPutCommand(ladderSubsystem, grabSubsystem), fullAuto.withTimeout(8),
+                            new AutoPutCommand(ladderSubsystem, grabSubsystem), fullAuto.withTimeout(4.25),
                             new AutoBalanceCommand(swerveSubsystem, false, false));
                 } else if (GOBalance.contains(autoChosen)) {
                     return new SequentialCommandGroup(
-                            fullAuto.withTimeout(8),
+                            fullAuto.withTimeout(4.25),
                             new AutoBalanceCommand(swerveSubsystem, false, false));
                 } else {return fullAuto;}
 
