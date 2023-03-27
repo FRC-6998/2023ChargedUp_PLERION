@@ -115,7 +115,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public Rotation2d getYaw() {
         return (NAVX_INVERTED) ? Rotation2d.fromDegrees(360 - navX.getYaw()) : Rotation2d.fromDegrees(navX.getYaw());
-        //return Rotation2d.fromDegrees(navX.getFusedHeading()-NAVX_FUSEDHEADING_OFFSET);
+        //return Rotation2d.fromDegrees(navX.getFusedHeading());
     }
 
     public void resetModulesToAbsolute(){
@@ -144,6 +144,5 @@ public class SwerveSubsystem extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + mod.moduleNum + " Integrated", mod.getPosition().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNum + " Velocity", mod.getState().speedMetersPerSecond);
         }
-        SmartDashboard.putNumber("A", navX.getRoll());
     }
 }

@@ -37,7 +37,7 @@ public class SwerveTypeConstants {
         double angleKP = 0.01;
         double angleKI = 0.0;
         double angleKD = 0.0;
-        double angleKF = 0.0;
+        double angleKF = 0;
 
         boolean driveMotorInvert = false;
         boolean angleMotorInvert = false;
@@ -57,7 +57,7 @@ public class SwerveTypeConstants {
         double angleKP = 0.01;
         double angleKI = 0.0;
         double angleKD = 0.0;
-        double angleKF = 0.0;
+        double angleKF = 0;
 
         boolean driveMotorInvert = false;
         boolean angleMotorInvert = false;
@@ -74,10 +74,10 @@ public class SwerveTypeConstants {
         double angleGearRatio = SWERVE_ANGLEGEAR_RATIOS_MK4I;
         double driveGearRatio = SWERVE_MK4_DRIVEGEAR_RATIOS_L1;
 
-        double angleKP = 0.01;
+        double angleKP = 0.0275;
         double angleKI = 0.0;
         double angleKD = 0.0;
-        double angleKF = 0.0;
+        double angleKF = 0.0001875;
 
         boolean driveMotorInvert = false;
         boolean angleMotorInvert = true;
@@ -94,10 +94,10 @@ public class SwerveTypeConstants {
         double angleGearRatio = SWERVE_ANGLEGEAR_RATIOS_MK4I;
         double driveGearRatio = SWERVE_MK4_DRIVEGEAR_RATIOS_L2;
 
-        double angleKP = 0.01;
+        double angleKP = 0.0275;
         double angleKI = 0.0;
         double angleKD = 0.0;
-        double angleKF = 0.0;
+        double angleKF = 0.0001875;
 
         boolean driveMotorInvert = false;
         boolean angleMotorInvert = true;

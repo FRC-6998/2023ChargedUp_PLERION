@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
 import frc.robot.commands.Autos.AutoBalanceCommand;
-import frc.robot.commands.Autos.AutoPutCommand;
 import frc.robot.subsystems.*;
 
 import java.util.*;
@@ -29,11 +28,12 @@ public class RobotContainer
 {
     // The robot's subsystems and commands are defined here...
     private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
-    private final LadderSubsystem ladderSubsystem = new LadderSubsystem();
     private final GrabSubsystem grabSubsystem = new GrabSubsystem();
+    private final LadderSubsystem ladderSubsystem = new LadderSubsystem(grabSubsystem);
     private final SwerveEstimatorsystem swerveEstimatorsystem = new SwerveEstimatorsystem(swerveSubsystem);
     private final static XboxController controller_driveX = new XboxController(0);
     private final static XboxController controller_Operator = new XboxController(1);
+    private final static XboxController controller_Tester = new XboxController(3);
     private final SendableChooser<String> pathChooser = new SendableChooser<>();
     private boolean hasAutoRun = false;
 
@@ -46,7 +46,8 @@ public class RobotContainer
                 () -> -controller_driveX.getRawAxis(XboxController.Axis.kLeftX.value),
                 () -> -controller_driveX.getRawAxis(XboxController.Axis.kRightX.value),
                 controller_driveX::getPOV,
-                controller_driveX::getBackButton
+                controller_driveX::getBackButton,
+                controller_driveX::getLeftBumper
         ));
 
         ladderSubsystem.setDefaultCommand(new LadderControlCommand(
@@ -94,21 +95,21 @@ public class RobotContainer
     }
 
     public Command getAutonomousCommand() {
-        swerveSubsystem.setNavXYaw(180);
         hasAutoRun = true;
         Command autoPut = new SequentialCommandGroup(
                 new ParallelCommandGroup(
-                        new InstantCommand(() -> ladderSubsystem.setLadderLength(3)),
+                        new InstantCommand(() -> grabSubsystem.grab = false),
+                        new InstantCommand(() -> ladderSubsystem.setLadderLength(5.9)),
                         new InstantCommand(() -> grabSubsystem.setGrabAngle(90))
                 ),
-                new DelayCommand(3),
+                new DelayCommand(1.375),
                 new InstantCommand(() -> grabSubsystem.grab = true),
-                new DelayCommand(1),
+                new DelayCommand(0.675),
                 new ParallelCommandGroup(
-                        new InstantCommand(() -> ladderSubsystem.setLadderLength(0)),
-                        new InstantCommand(() -> grabSubsystem.setGrabAngle(30))
+                        new InstantCommand(() -> ladderSubsystem.setLadderLength(0))
                 ),
-                new DelayCommand(1)
+                new DelayCommand(1),
+                new InstantCommand(() -> grabSubsystem.setGrabAngle(20))
         );
         String autoChosen = pathChooser.getSelected();
         switch (autoChosen) {
@@ -120,14 +121,14 @@ public class RobotContainer
                 return autoPut;
             case "PUT_CUBE_AND_BALANCE":
                 return new SequentialCommandGroup(
-                        new AutoPutCommand(ladderSubsystem, grabSubsystem),
+                        autoPut,
                         new AutoBalanceCommand(swerveSubsystem, true, false));
             default:
                 List<String> middleOutAndBalance = Arrays.asList("PUT_CUBE_AND_MIDDLE_OUT_AND_BALANCE", "PUT_CUBE_AND_MIDDLE_OUT", "MIDDLE_OUT_AND_BALANCE");
                 List<PathPlannerTrajectory> pathGroup;
                 if (middleOutAndBalance.contains(autoChosen)) {
                     pathGroup =
-                            PathPlanner.loadPathGroup(pathChooser.getSelected(), new PathConstraints(0.5, 3));
+                            PathPlanner.loadPathGroup(pathChooser.getSelected(), new PathConstraints(1, 3));
                 } else{
                     pathGroup =
                             PathPlanner.loadPathGroup(pathChooser.getSelected(), new PathConstraints(4, 3));}
@@ -152,18 +153,18 @@ public class RobotContainer
                 List<String> GOBalance = Arrays.asList( "LONG_OUT_AND_BALANCE", "SHORT_OUT_AND_BALANCE", "PUT_CUBE_AND_BALANCE");
                 if (putGO.contains(autoChosen)) {
                     return new SequentialCommandGroup
-                            (new AutoPutCommand(ladderSubsystem, grabSubsystem), fullAuto.withTimeout(4.25));
+                            (autoPut, fullAuto.withTimeout(4.25));
                 } else if (autoChosen=="PUT_CUBE_AND_MIDDLE_OUT") {
                     return new SequentialCommandGroup(
-                            new AutoPutCommand(ladderSubsystem, grabSubsystem), fullAuto.withTimeout(7),
+                            autoPut, fullAuto.withTimeout(7),
                             new AutoBalanceCommand(swerveSubsystem, false, false));
                 } else if(autoChosen=="PUT_CUBE_AND_MIDDLE_OUT_AND_BALANCE"){
                     return new SequentialCommandGroup(
-                            new AutoPutCommand(ladderSubsystem, grabSubsystem), fullAuto.withTimeout(7),
+                            autoPut, fullAuto.withTimeout(7),
                             new AutoBalanceCommand(swerveSubsystem, false, false));
                 } else if (putGOBalance.contains(autoChosen)) {
                     return new SequentialCommandGroup(
-                            new AutoPutCommand(ladderSubsystem, grabSubsystem), fullAuto.withTimeout(4.25),
+                            autoPut, fullAuto.withTimeout(4.25),
                             new AutoBalanceCommand(swerveSubsystem, false, false));
                 } else if (GOBalance.contains(autoChosen)) {
                     return new SequentialCommandGroup(

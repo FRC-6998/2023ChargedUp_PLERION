@@ -9,7 +9,7 @@ public class RobotMap {
     public static final SerialPort.Port NAVX_SERIAL_TYPE = SerialPort.Port.kUSB;
 
     public static final String LIMELIGHT_SIDE_NAME = "limelight-side";
-    public static final String LIMELIGHT_FRONT_NAME = "limelight-front";
+    public static final String LIMELIGHT_CENTER_NAME = "limelight-center";
 
     public static final int SWERVE_LEFTFRONT_DRIVEMOTOR = 1;
     public static final int SWERVE_LEFTFRONT_ANGLEMOTOR = 1;

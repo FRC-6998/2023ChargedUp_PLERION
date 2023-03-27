@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -44,7 +45,7 @@ public class GrabAngleControlCommand extends CommandBase {
                 timer.restart();
             }
         }
-        grabSubsystem.setGrabAngle(grabAngle);
+        if(DriverStation.isTeleopEnabled()){grabSubsystem.setGrabAngle(grabAngle);}
         SmartDashboard.putNumber("Grab_Angle", grabAngle);
     }
 }

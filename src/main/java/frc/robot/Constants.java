@@ -13,7 +13,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
 public final class Constants {
-    public static final double NAVX_FUSEDHEADING_OFFSET = 354.72;
     public static final Rotation2d SWERVE_LEFTFRONT_OFFSET = Rotation2d.fromDegrees(169.365234375+180);//wait for test
     public static final Rotation2d SWERVE_LEFTREAR_OFFSET = Rotation2d.fromDegrees(241.61132812500003-180);
     public static final Rotation2d SWERVE_RIGHTFRONT_OFFSET = Rotation2d.fromDegrees(253.38867187499997-180);
@@ -29,7 +28,6 @@ public final class Constants {
     public static final double SWERVE_POV_MOVE_SPEED = 0.2;
 
 
-    public static final int SWERVE_PERIOD_MS = 10;
     public static final double SWERVE_VOLTAGE_COMPENSATION = 12.0;
     //Swerve angle falcon current limit.
     public static final int SWERVE_ANGLE_CURRENT_LIMIT = 35;
@@ -50,9 +48,9 @@ public final class Constants {
     public static final double SWERVE_DRIVE_MOTOR_CLOSELOOPRAMP = 0.0;
     public static final NeutralMode DRIVE_NEUTRAL_MODE = NeutralMode.Brake;
 
-    public static final double SWERVE_DRIVE_KS = (0.32 / MAX_VOTAGE);//Wait to test by SYSID.
-    public static final double SWERVE_DRIVE_KV = (1.51 / MAX_VOTAGE);
-    public static final double SWERVE_DRIVE_KA = (0.27 / MAX_VOTAGE);
+    public static final double SWERVE_DRIVE_KS = (0.068817 / MAX_VOTAGE);//Wait to test by SYSID.
+    public static final double SWERVE_DRIVE_KV = (2.755 / MAX_VOTAGE);
+    public static final double SWERVE_DRIVE_KA = (0.73295 / MAX_VOTAGE);
 
     /* These values are used by the drive falcon to ramp in open loop and closed loop driving.
      * We found a small open loop ramp (0.25) helps with tread wear, tipping, etc */
@@ -72,7 +70,7 @@ public final class Constants {
     public static final double SWERVE_AUTO_XY_KI = 0.0;
     public static final double SWERVE_AUTO_XY_KD = 0.0;
 
-    public static final double SWERVE_AUTO_Z_KP = 0.0;
+    public static final double SWERVE_AUTO_Z_KP = 0.01;
     public static final double SWERVE_AUTO_Z_KI = 0.0;
     public static final double SWERVE_AUTO_Z_KD = 0.0;
 
@@ -139,18 +137,11 @@ public final class Constants {
     public static final double GRAB_ANGLECONTROL_WAITTIME = 0.01;
     public static final double GRAB_ANGLECONTROL_NUM = 2;
 
-    public static final double CUBE_AUTO_SECOND_LENGTH = 10;
-    public static final double CUBE_AUTO_THIRD_LENGTH = 10;
-    public static final double CONE_AUTO_SECOND_LENGTH = 10;
-    public static final double CONE_AUTO_THIRD_LENGTH = 10;
-    public static final double CUBE_AUTO_SECOND_ANGLE = 10;
-    public static final double CUBE_AUTO_THIRD_ANGLE = 10;
-    public static final double CONE_AUTO_SECOND_ANGLE = 10;
-    public static final double CONE_AUTO_THIRD_ANGLE = 10;
-
-    public static final double LADDER_FAST_PUT_FIRST_LENGTH = 0;
-    public static final double LADDER_FAST_PUT_SECOND_LENGTH = 10;
-    public static final double LADDER_FAST_PUT_THIRD_LENGTH = 10;
-
     public static final double VISION_POSE_TRUST_WORTHINESS = 1;
+
+    public static final double VISION_AIM_KP = 0.01;
+    public static final double VISION_AIM_KI = 0;
+    public static final double VISION_AIM_KD = 0;
+    public static  final  double VISION_AIM_TOLERANCE = 0;
+    public static final double VISION_AIM_INTEGRATOR_RANGE = 0.5;
 }

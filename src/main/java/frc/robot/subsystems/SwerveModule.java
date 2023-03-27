@@ -122,7 +122,6 @@ public class SwerveModule {
         driveFalcon.setInverted(swerveTypeConstants.driveMotorInvert);
         driveFalcon.setNeutralMode(DRIVE_NEUTRAL_MODE);
         driveFalcon.setSelectedSensorPosition(0);
-        driveFalcon.setStatusFramePeriod(StatusFrame.Status_1_General, SWERVE_PERIOD_MS);
     }
 
     private void configAngleMotor(){
@@ -137,7 +136,6 @@ public class SwerveModule {
         angleNEO.setInverted(swerveTypeConstants.angleMotorInvert);
         angleNEO.setIdleMode(ANGLE_NEUTRAL_MODE);
         angleMotorEncoder.setPositionConversionFactor(360 / swerveTypeConstants.angleGearRatio);
-        angleNEO.setPeriodicFramePeriod(CANSparkMaxLowLevel.PeriodicFrame.kStatus0, SWERVE_PERIOD_MS);
 
         angleNEO.burnFlash();
         resetToAbsolute();

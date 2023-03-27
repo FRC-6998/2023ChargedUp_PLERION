@@ -9,6 +9,7 @@ import com.revrobotics.*;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.*;
@@ -16,13 +17,15 @@ import static frc.robot.RobotMap.*;
 
 public class LadderSubsystem extends SubsystemBase
 {
+    private GrabSubsystem grabSubsystem;
     private final CANSparkMax ladderMotor_LL =
             new CANSparkMax(LADDER_MOTOR_LOWER_L, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final CANSparkMax ladderMotor_LR =
             new CANSparkMax(LADDER_MOTOR_LOWER_R, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final CANSparkMax ladderMotor_U =
             new CANSparkMax(LADDER_MOTOR_UPPER, CANSparkMaxLowLevel.MotorType.kBrushless);
-    public LadderSubsystem(){
+    public LadderSubsystem(GrabSubsystem grabSubsystem){
+        this.grabSubsystem = grabSubsystem;
         configLowerLadderMotor();
         configUpperLadderMotor();
     }
@@ -34,10 +37,10 @@ public class LadderSubsystem extends SubsystemBase
             ladderMotor_LR.getEncoder().setPosition(0);
             LowerladderZeroing = true;
         }
-//        if(!UpperladderZeroing&&!grabSubsystem.grab_AngleMotor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed).isPressed()){
-//            ladderMotor_U.getEncoder().setPosition(0);
-//            UpperladderZeroing = true;
-//        }
+        if(!UpperladderZeroing&&!grabSubsystem.grab_AngleMotor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed).isPressed()){
+            ladderMotor_U.getEncoder().setPosition(0);
+            UpperladderZeroing = true;
+        }
     }
     public void setLadderLength(double length){
         ladderMotor_LL.getPIDController().setReference(
@@ -49,6 +52,8 @@ public class LadderSubsystem extends SubsystemBase
     public void periodic()
     {
         setLadderZeroing();
+        SmartDashboard.putBoolean("L", LowerladderZeroing);
+        SmartDashboard.putBoolean("U", UpperladderZeroing);
     }
 
     private void configLowerLadderMotor(){

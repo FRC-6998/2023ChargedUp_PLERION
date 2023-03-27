@@ -7,8 +7,11 @@ package frc.robot.subsystems;
 
 import com.revrobotics.*;
 import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
+import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.*;
@@ -19,6 +22,7 @@ public class GrabSubsystem extends SubsystemBase
     public final CANSparkMax grab_AngleMotor =
             new CANSparkMax(GRAB_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
     private final Solenoid Grab = new Solenoid(PNEUMATICS_MODULE_TYPE, GRAB_SOLENOID);
+    PneumaticHub PH = new PneumaticHub(1);
     private ArmFeedforward grab_ArmFeedforward = new ArmFeedforward(GRAB_ARMFEEDFORWARD_KS,
             GRAB_ARMFEEDFORWARD_KG, GRAB_ARMFEEDFORWARD_KV, GRAB_ARMFEEDFORWARD_KA);
     public boolean grab = false;
@@ -63,7 +67,6 @@ public class GrabSubsystem extends SubsystemBase
                 .setPositionConversionFactor(GRAB_ABSOLUTE_ENCODER_FACTOR);
         grab_AngleMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle)
                 .setZeroOffset(GRAB_ABSOLUTE_ENCODER_OFFSET);
-
         grab_AngleMotor.burnFlash();
     }
 
@@ -77,6 +80,8 @@ public class GrabSubsystem extends SubsystemBase
     @Override
     public void periodic()
     {
+        SmartDashboard.putNumber("workingPressure", PH.getPressure(1));
+        SmartDashboard.putNumber("StorePressure", PH.getPressure(0));
         Grab.set(grab);
     }
 }
