@@ -10,17 +10,12 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.LimelightHelpers;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 import static frc.robot.Constants.*;
 import static frc.robot.RobotMap.*;
@@ -61,10 +56,12 @@ public class SwerveEstimatorsystem extends SubsystemBase {
         try {
             Pose2d visionPose = LimelightHelpers.getBotPose2d_wpiBlue(LIMELIGHT_SIDE_NAME);
             double latency = Timer.getFPGATimestamp() - (LimelightHelpers.getBotPose(LIMELIGHT_SIDE_NAME)[6]/1000.0);
+            if(Math.abs(visionPose.getX()-swerveDrivePoseEstimator.getEstimatedPosition().getX())<=1&&Math.abs(visionPose.getY()-swerveDrivePoseEstimator.getEstimatedPosition().getY())<=1
+                    ||(visionPose.getX()<=2&&visionPose.getX()>=0.5)){
                 swerveDrivePoseEstimator.addVisionMeasurement(visionPose, latency,
                         visionMeasurementStdDevs_limelightSide.times(1.0 / VISION_POSE_TRUST_WORTHINESS));
+            }
         } catch (Exception e) {}
-
     }
     @Override
     public void periodic(){

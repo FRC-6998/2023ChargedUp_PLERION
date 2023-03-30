@@ -37,7 +37,7 @@ public class LadderSubsystem extends SubsystemBase
             ladderMotor_LR.getEncoder().setPosition(0);
             LowerladderZeroing = true;
         }
-        if(!UpperladderZeroing&&!grabSubsystem.grab_AngleMotor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed).isPressed()){
+        if(!UpperladderZeroing&&!grabSubsystem.grab_AngleMotor.getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen).isPressed()){
             ladderMotor_U.getEncoder().setPosition(0);
             UpperladderZeroing = true;
         }

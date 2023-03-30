@@ -16,9 +16,8 @@ import static frc.robot.RobotMap.*;
 
 public class LEDSubsystem extends SubsystemBase
 {
-    private final AddressableLED led = new AddressableLED(0);
-    private final AddressableLEDBuffer ledBuffer = new AddressableLEDBuffer(8);
-    private final PowerDistribution PDH = new PowerDistribution(1, PowerDistribution.ModuleType.kRev);
+    private final AddressableLED led = new AddressableLED(9);
+    private final AddressableLEDBuffer ledBuffer = new AddressableLEDBuffer(50);
     private int rainbowFirstPixelHue;
     public LEDSubsystem(){
         // PWM port 9
@@ -37,19 +36,26 @@ public class LEDSubsystem extends SubsystemBase
     @Override
     public void periodic()
     {
-        // Fill the buffer with a rainbow
-        rainbow();
-        // Set the LEDs
+
+    }
+
+    private void setAllLedColor(int r, int g , int b){
+        for (var i = 0; i < ledBuffer.getLength(); i++) {
+            // Sets the specified LED to the RGB values for red
+            ledBuffer.setRGB(i, r, g, b);
+        }
         led.setData(ledBuffer);
     }
-    private void rainbow() {
+    public void setConeColor(){setAllLedColor(255, 182, 0);}
+    public void setCubeColor(){setAllLedColor(177, 79, 197);}
+    public void rainbow() {
         // For every pixel
         for (var i = 0; i < ledBuffer.getLength(); i++) {
             // Calculate the hue - hue is easier for rainbows because the color
             // shape is a circle so only one value needs to precess
             final var hue = (rainbowFirstPixelHue + (i * 180 / ledBuffer.getLength())) % 180;
             // Set the value
-            ledBuffer.setHSV(i, rainbowFirstPixelHue, 255, 128);
+            ledBuffer.setHSV(i, hue, 255, 128);
         }
         // Increase by to make the rainbow "move"
         rainbowFirstPixelHue += 3;

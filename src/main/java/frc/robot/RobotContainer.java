@@ -10,7 +10,9 @@ import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
@@ -31,11 +33,12 @@ public class RobotContainer
     private final GrabSubsystem grabSubsystem = new GrabSubsystem();
     private final LadderSubsystem ladderSubsystem = new LadderSubsystem(grabSubsystem);
     private final SwerveEstimatorsystem swerveEstimatorsystem = new SwerveEstimatorsystem(swerveSubsystem);
+    private final LEDSubsystem ledSubsystem = new LEDSubsystem();
     private final static XboxController controller_driveX = new XboxController(0);
     private final static XboxController controller_Operator = new XboxController(1);
     private final static XboxController controller_Tester = new XboxController(3);
     private final SendableChooser<String> pathChooser = new SendableChooser<>();
-    private boolean hasAutoRun = false;
+    private boolean isStartRecord = false;
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer()
@@ -87,15 +90,26 @@ public class RobotContainer
                 .onTrue(new InstantCommand(swerveSubsystem::zeroGyro));
         new JoystickButton(controller_Operator, XboxController.Button.kX.value)
                 .onTrue(new InstantCommand(grabSubsystem::set_Grabing));
-        new JoystickButton(controller_driveX, XboxController.Button.kA.value)
+        new JoystickButton(controller_driveX, XboxController.Button.kStart.value)
                 .onTrue(new InstantCommand(swerveSubsystem::setBrakingForCharge));
+        new JoystickButton(controller_Operator, XboxController.Button.kRightBumper.value)
+                .onTrue(new InstantCommand(ledSubsystem::setConeColor));
+        new JoystickButton(controller_Operator, XboxController.Button.kLeftBumper.value)
+                .onTrue(new InstantCommand(ledSubsystem::setCubeColor));
     }
 
     public void robotInit() {
     }
-
+    public void disabledPeriodic() {ledSubsystem.rainbow();}
+    public void robotPeriodic()
+    {
+        if(!isStartRecord&&DriverStation.isEnabled()){Shuffleboard.startRecording();}
+        if(isStartRecord&&DriverStation.isDisabled()){
+            Shuffleboard.stopRecording();
+            isStartRecord = false;
+        }
+    }
     public Command getAutonomousCommand() {
-        hasAutoRun = true;
         Command autoPut = new SequentialCommandGroup(
                 new ParallelCommandGroup(
                         new InstantCommand(() -> grabSubsystem.grab = false),
@@ -171,7 +185,6 @@ public class RobotContainer
                             fullAuto.withTimeout(4.25),
                             new AutoBalanceCommand(swerveSubsystem, false, false));
                 } else {return fullAuto;}
-
         }
     }
 }

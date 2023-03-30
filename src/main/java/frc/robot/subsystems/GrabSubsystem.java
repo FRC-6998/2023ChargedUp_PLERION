@@ -26,10 +26,12 @@ public class GrabSubsystem extends SubsystemBase
     private ArmFeedforward grab_ArmFeedforward = new ArmFeedforward(GRAB_ARMFEEDFORWARD_KS,
             GRAB_ARMFEEDFORWARD_KG, GRAB_ARMFEEDFORWARD_KV, GRAB_ARMFEEDFORWARD_KA);
     public boolean grab = false;
+    private boolean pressureFulling = false;
 
     public GrabSubsystem(){
         configAngleMotor();
         resetAngleMotorEncoder();
+        PH.enableCompressorAnalog(67.5, 120);
     }
     private void resetAngleMotorEncoder(){
         Timer.delay(0.5);
@@ -44,7 +46,7 @@ public class GrabSubsystem extends SubsystemBase
         grab_AngleMotor.restoreFactoryDefaults();
         grab_AngleMotor.setInverted(GRAB_ANGLE_MOTOR_INVERTED);
         grab_AngleMotor
-                .getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyClosed).enableLimitSwitch(false);
+                .getReverseLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen).enableLimitSwitch(false);
         grab_AngleMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, GRAB_ANGLE_LIMIT);
         grab_AngleMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 0);
         grab_AngleMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse,true);
