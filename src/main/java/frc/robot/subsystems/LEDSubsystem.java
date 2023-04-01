@@ -5,9 +5,6 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel;
-import com.revrobotics.SparkMaxAbsoluteEncoder;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -17,7 +14,7 @@ import static frc.robot.RobotMap.*;
 public class LEDSubsystem extends SubsystemBase
 {
     private final AddressableLED led = new AddressableLED(9);
-    private final AddressableLEDBuffer ledBuffer = new AddressableLEDBuffer(50);
+    private final AddressableLEDBuffer ledBuffer = new AddressableLEDBuffer(45);
     private int rainbowFirstPixelHue;
     public LEDSubsystem(){
         // PWM port 9
@@ -36,7 +33,6 @@ public class LEDSubsystem extends SubsystemBase
     @Override
     public void periodic()
     {
-
     }
 
     private void setAllLedColor(int r, int g , int b){

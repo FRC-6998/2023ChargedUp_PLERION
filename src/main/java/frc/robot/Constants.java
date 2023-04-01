@@ -74,7 +74,7 @@ public final class Constants {
     public static final double SWERVE_AUTO_Z_KI = 0.0;
     public static final double SWERVE_AUTO_Z_KD = 0.0;
 
-    public static final double AUTO_BALANCE_KP = 0.0075;
+    public static final double AUTO_BALANCE_KP = 0.0045;
     public static final double AUTO_BALANCE_KI = 0;
     public static final double AUTO_BALANCE_KD = 0;
     public static final double AUTO_BALANCE_TOLERANCE = 1.5;
@@ -134,8 +134,8 @@ public final class Constants {
     public static final double LADDER_POVCONTROL_WAITTIME = 1;
     public static final double LADDER_POVCONTROL_NUM = 0.2;
     public static final double START_GRAB_ANGLE = 20;
-    public static final double GRAB_ANGLECONTROL_WAITTIME = 0.01;
-    public static final double GRAB_ANGLECONTROL_NUM = 2;
+    public static final double GRAB_ANGLECONTROL_WAITTIME = 0.005;
+    public static final double GRAB_ANGLECONTROL_NUM = 1.375;
 
     public static final double VISION_POSE_TRUST_WORTHINESS = 1;
 

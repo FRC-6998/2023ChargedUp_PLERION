@@ -6,9 +6,6 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.*;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -51,7 +48,7 @@ public class LadderSubsystem extends SubsystemBase
     @Override
     public void periodic()
     {
-        setLadderZeroing();
+        //setLadderZeroing();
         SmartDashboard.putBoolean("L", LowerladderZeroing);
         SmartDashboard.putBoolean("U", UpperladderZeroing);
     }

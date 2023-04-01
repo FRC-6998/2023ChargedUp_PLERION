@@ -32,11 +32,11 @@ public class RobotContainer
     private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
     private final GrabSubsystem grabSubsystem = new GrabSubsystem();
     private final LadderSubsystem ladderSubsystem = new LadderSubsystem(grabSubsystem);
-    private final SwerveEstimatorsystem swerveEstimatorsystem = new SwerveEstimatorsystem(swerveSubsystem);
+    //private final SwerveEstimatorsystem swerveEstimatorsystem = new SwerveEstimatorsystem(swerveSubsystem);
     private final LEDSubsystem ledSubsystem = new LEDSubsystem();
     private final static XboxController controller_driveX = new XboxController(0);
     private final static XboxController controller_Operator = new XboxController(1);
-    private final static XboxController controller_Tester = new XboxController(3);
+    //private final static XboxController controller_Tester = new XboxController(3);
     private final SendableChooser<String> pathChooser = new SendableChooser<>();
     private boolean isStartRecord = false;
 
@@ -80,6 +80,7 @@ public class RobotContainer
         pathChooser.addOption("PUT CUBE AND MIDDLE OUT THEN BALANCE", "PUT_CUBE_AND_MIDDLE_OUT_AND_BALANCE");
         pathChooser.addOption("PUT CUBE AND LONG OUT THEN BALANCE", "PUT_CUBE_AND_LONG_OUT_AND_BALANCE");
         pathChooser.addOption("PUT CUBE AND SHORT OUT THEN BALANCE", "PUT_CUBE_AND_SHORT_OUT_AND_BALANCE");
+        pathChooser.addOption("PUT LOW CUBE AND OUT", "PUT_LOW_CUBE_AND_OUT");
         SmartDashboard.putData("Auto choices", pathChooser);
     }
 
@@ -114,17 +115,26 @@ public class RobotContainer
                 new ParallelCommandGroup(
                         new InstantCommand(() -> grabSubsystem.grab = false),
                         new InstantCommand(() -> ladderSubsystem.setLadderLength(5.9)),
-                        new InstantCommand(() -> grabSubsystem.setGrabAngle(90))
+                        new InstantCommand(() -> grabSubsystem.setGrabAngle(103.785))
                 ),
-                new DelayCommand(1.375),
+                new DelayCommand(1.675),
                 new InstantCommand(() -> grabSubsystem.grab = true),
-                new DelayCommand(0.675),
+                new DelayCommand(1),
                 new ParallelCommandGroup(
                         new InstantCommand(() -> ladderSubsystem.setLadderLength(0))
                 ),
                 new DelayCommand(1),
                 new InstantCommand(() -> grabSubsystem.setGrabAngle(20))
         );
+        Command autoPutLOW = new SequentialCommandGroup(
+                new InstantCommand(() -> grabSubsystem.setGrabAngle(90)),
+                new DelayCommand(2),
+                new InstantCommand(() -> grabSubsystem.grab = true),
+                new DelayCommand(1),
+                new InstantCommand(() -> grabSubsystem.grab = false),
+                new DelayCommand(1),
+                new InstantCommand(() -> grabSubsystem.setGrabAngle(20)
+        ));
         String autoChosen = pathChooser.getSelected();
         switch (autoChosen) {
             case "DONT_MOVE":
@@ -158,7 +168,7 @@ public class RobotContainer
                         new PIDConstants(SWERVE_AUTO_Z_KP, SWERVE_AUTO_Z_KI, SWERVE_AUTO_Z_KD), // PID constants to correct for rotation error (used to create the rotation controller)
                         swerveSubsystem::setModuleStates, // Module states consumer used to output to the drive subsystem
                         eventMap,
-                        false, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
+                        true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
                         swerveSubsystem // The drive subsystem. Used to properly set the requirements of path following commands
                 );
                 final Command fullAuto = autoBuilder.fullAuto(pathGroup);
@@ -172,10 +182,16 @@ public class RobotContainer
                     return new SequentialCommandGroup(
                             autoPut, fullAuto.withTimeout(7),
                             new AutoBalanceCommand(swerveSubsystem, false, false));
+                } else if (autoChosen=="MIDDLE_OUT_AND_BALANCE") {
+                    return new SequentialCommandGroup(fullAuto.withTimeout(7), new AutoBalanceCommand(swerveSubsystem, false, false));
                 } else if(autoChosen=="PUT_CUBE_AND_MIDDLE_OUT_AND_BALANCE"){
                     return new SequentialCommandGroup(
                             autoPut, fullAuto.withTimeout(7),
                             new AutoBalanceCommand(swerveSubsystem, false, false));
+                } else if (autoChosen=="PUT_LOW_CUBE_AND_OUT") {
+                    return  new SequentialCommandGroup(
+                            autoPutLOW,fullAuto.withTimeout(10)
+                    );
                 } else if (putGOBalance.contains(autoChosen)) {
                     return new SequentialCommandGroup(
                             autoPut, fullAuto.withTimeout(4.25),

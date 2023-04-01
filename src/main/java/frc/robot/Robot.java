@@ -5,12 +5,10 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import frc.robot.subsystems.SwerveSubsystem;
 
 
 
@@ -39,6 +37,7 @@ public class Robot extends TimedRobot
         // autonomous chooser on the dashboard.
         robotContainer = new RobotContainer();
         robotContainer.robotInit();
+        PortForwarder.add(8888, "wpilibpi.local", 80);
     }
     
     
@@ -67,7 +66,7 @@ public class Robot extends TimedRobot
     
     
     @Override
-    public void disabledPeriodic() {robotContainer.disabledPeriodic();}
+    public void disabledPeriodic() {}
     
     
     /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
