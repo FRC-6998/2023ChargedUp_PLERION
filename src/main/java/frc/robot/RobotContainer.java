@@ -81,6 +81,7 @@ public class RobotContainer
         pathChooser.addOption("PUT CUBE AND LONG OUT THEN BALANCE", "PUT_CUBE_AND_LONG_OUT_AND_BALANCE");
         pathChooser.addOption("PUT CUBE AND SHORT OUT THEN BALANCE", "PUT_CUBE_AND_SHORT_OUT_AND_BALANCE");
         pathChooser.addOption("PUT LOW CUBE AND OUT", "PUT_LOW_CUBE_AND_OUT");
+        pathChooser.addOption("PUT LOW CUBE AND BALANCE", "PUT_LOW_CUBE_AND_BALANCE");
         SmartDashboard.putData("Auto choices", pathChooser);
     }
 
@@ -128,13 +129,12 @@ public class RobotContainer
         );
         Command autoPutLOW = new SequentialCommandGroup(
                 new InstantCommand(() -> grabSubsystem.setGrabAngle(90)),
-                new DelayCommand(2),
+                new DelayCommand(1.5),
                 new InstantCommand(() -> grabSubsystem.grab = true),
                 new DelayCommand(1),
                 new InstantCommand(() -> grabSubsystem.grab = false),
-                new DelayCommand(1),
-                new InstantCommand(() -> grabSubsystem.setGrabAngle(20)
-        ));
+                new DelayCommand(0.5)
+        );
         String autoChosen = pathChooser.getSelected();
         switch (autoChosen) {
             case "DONT_MOVE":
@@ -146,6 +146,10 @@ public class RobotContainer
             case "PUT_CUBE_AND_BALANCE":
                 return new SequentialCommandGroup(
                         autoPut,
+                        new AutoBalanceCommand(swerveSubsystem, true, false));
+            case "PUT_LOW_CUBE_AND_BALANCE":
+                return new SequentialCommandGroup(
+                        autoPutLOW,
                         new AutoBalanceCommand(swerveSubsystem, true, false));
             default:
                 List<String> middleOutAndBalance = Arrays.asList("PUT_CUBE_AND_MIDDLE_OUT_AND_BALANCE", "PUT_CUBE_AND_MIDDLE_OUT", "MIDDLE_OUT_AND_BALANCE");
