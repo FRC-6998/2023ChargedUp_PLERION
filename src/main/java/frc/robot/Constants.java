@@ -13,10 +13,15 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
 public final class Constants {
-    public static final Rotation2d SWERVE_LEFTFRONT_OFFSET = Rotation2d.fromDegrees(169.365234375+180);//wait for test
-    public static final Rotation2d SWERVE_LEFTREAR_OFFSET = Rotation2d.fromDegrees(241.61132812500003-180);
-    public static final Rotation2d SWERVE_RIGHTFRONT_OFFSET = Rotation2d.fromDegrees(253.38867187499997-180);
-    public static final Rotation2d SWERVE_RIGHTREAR_OFFSET = Rotation2d.fromDegrees(45.70312500000001);
+//    public static final Rotation2d SWERVE_LEFTFRONT_OFFSET = Rotation2d.fromDegrees(169.365234375+180);//wait for test
+//    public static final Rotation2d SWERVE_LEFTREAR_OFFSET = Rotation2d.fromDegrees(241.61132812500003-180);
+//    public static final Rotation2d SWERVE_RIGHTFRONT_OFFSET = Rotation2d.fromDegrees(253.38867187499997-180);
+//    public static final Rotation2d SWERVE_RIGHTREAR_OFFSET = Rotation2d.fromDegrees(45.70312500000001);
+
+    public static final Rotation2d SWERVE_LEFTFRONT_OFFSET = Rotation2d.fromDegrees(40.78125);//wait for test
+    public static final Rotation2d SWERVE_LEFTREAR_OFFSET = Rotation2d.fromDegrees(69.169921875);
+    public static final Rotation2d SWERVE_RIGHTFRONT_OFFSET = Rotation2d.fromDegrees(11.337);
+    public static final Rotation2d SWERVE_RIGHTREAR_OFFSET = Rotation2d.fromDegrees(0.087890625);
 
     public static final double SWERVE_CHASSIS_TRACKWIDTH_METERS = 0.62865;
     public static final double SWERVE_CHASSIS_WHEELBASE_METERS = 0.62865;

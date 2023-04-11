@@ -54,7 +54,7 @@ public class SwerveSubsystem extends SubsystemBase {
                                 translation.getX(),
                                 translation.getY(),
                                 rotation,
-                                getYaw()
+                                getAngle()
                         )
                                 : new ChassisSpeeds(
                                 translation.getX(),
@@ -109,12 +109,16 @@ public class SwerveSubsystem extends SubsystemBase {
     public void zeroGyro(){
         navX.reset();
     }
-    public void setNavXYaw(double yaw){
-        navX.setAngleAdjustment(yaw);
-    }
 
     public Rotation2d getYaw() {
         return (NAVX_INVERTED) ? Rotation2d.fromDegrees(360 - navX.getYaw()) : Rotation2d.fromDegrees(navX.getYaw());
+    }
+
+    public Rotation2d getAngle(){
+        return (NAVX_INVERTED) ? Rotation2d.fromDegrees(360 - navX.getAngle()) : Rotation2d.fromDegrees(navX.getAngle());
+    }
+    public void setNavXAngle(double angle){
+        navX.setAngleAdjustment(angle);
     }
 
     public void resetModulesToAbsolute(){

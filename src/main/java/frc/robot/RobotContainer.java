@@ -32,7 +32,6 @@ public class RobotContainer
     private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
     private final GrabSubsystem grabSubsystem = new GrabSubsystem();
     private final LadderSubsystem ladderSubsystem = new LadderSubsystem(grabSubsystem);
-    //private final SwerveEstimatorsystem swerveEstimatorsystem = new SwerveEstimatorsystem(swerveSubsystem);
     private final LEDSubsystem ledSubsystem = new LEDSubsystem();
     private final static XboxController controller_driveX = new XboxController(0);
     private final static XboxController controller_Operator = new XboxController(1);
@@ -89,7 +88,7 @@ public class RobotContainer
     private void configureBindings()
     {
         new JoystickButton(controller_driveX, XboxController.Button.kRightBumper.value)
-                .onTrue(new InstantCommand(swerveSubsystem::zeroGyro));
+                .onTrue(new ParallelCommandGroup(new InstantCommand(swerveSubsystem::zeroGyro),new InstantCommand(()-> swerveSubsystem.setNavXAngle(0))));
         new JoystickButton(controller_Operator, XboxController.Button.kX.value)
                 .onTrue(new InstantCommand(grabSubsystem::set_Grabing));
         new JoystickButton(controller_driveX, XboxController.Button.kStart.value)
@@ -112,6 +111,8 @@ public class RobotContainer
         }
     }
     public Command getAutonomousCommand() {
+        swerveSubsystem.zeroGyro();
+        swerveSubsystem.setNavXAngle(180);
         Command autoPut = new SequentialCommandGroup(
                 new ParallelCommandGroup(
                         new InstantCommand(() -> grabSubsystem.grab = false),
