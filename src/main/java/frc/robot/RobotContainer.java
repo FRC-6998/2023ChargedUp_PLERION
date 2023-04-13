@@ -114,21 +114,6 @@ public class RobotContainer
         swerveSubsystem.zeroGyro();
         swerveSubsystem.setNavXAngle(180);
         Command autoPut = new SequentialCommandGroup(
-                new ParallelCommandGroup(
-                        new InstantCommand(() -> grabSubsystem.grab = false),
-                        new InstantCommand(() -> ladderSubsystem.setLadderLength(5.9)),
-                        new InstantCommand(() -> grabSubsystem.setGrabAngle(103.785))
-                ),
-                new DelayCommand(1.675),
-                new InstantCommand(() -> grabSubsystem.grab = true),
-                new DelayCommand(1),
-                new ParallelCommandGroup(
-                        new InstantCommand(() -> ladderSubsystem.setLadderLength(0))
-                ),
-                new DelayCommand(1),
-                new InstantCommand(() -> grabSubsystem.setGrabAngle(20))
-        );
-        Command autoPutLOW = new SequentialCommandGroup(
                 new InstantCommand(() -> grabSubsystem.setGrabAngle(90)),
                 new DelayCommand(1.5),
                 new InstantCommand(() -> grabSubsystem.grab = true),
@@ -147,10 +132,6 @@ public class RobotContainer
             case "PUT_CUBE_AND_BALANCE":
                 return new SequentialCommandGroup(
                         autoPut,
-                        new AutoBalanceCommand(swerveSubsystem, true, false));
-            case "PUT_LOW_CUBE_AND_BALANCE":
-                return new SequentialCommandGroup(
-                        autoPutLOW,
                         new AutoBalanceCommand(swerveSubsystem, true, false));
             default:
                 List<String> middleOutAndBalance = Arrays.asList("PUT_CUBE_AND_MIDDLE_OUT_AND_BALANCE", "PUT_CUBE_AND_MIDDLE_OUT", "MIDDLE_OUT_AND_BALANCE");
@@ -193,10 +174,6 @@ public class RobotContainer
                     return new SequentialCommandGroup(
                             autoPut, fullAuto.withTimeout(7),
                             new AutoBalanceCommand(swerveSubsystem, false, false));
-                } else if (autoChosen=="PUT_LOW_CUBE_AND_OUT") {
-                    return  new SequentialCommandGroup(
-                            autoPutLOW,fullAuto.withTimeout(10)
-                    );
                 } else if (putGOBalance.contains(autoChosen)) {
                     return new SequentialCommandGroup(
                             autoPut, fullAuto.withTimeout(4.25),
