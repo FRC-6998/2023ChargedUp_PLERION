@@ -79,8 +79,6 @@ public class RobotContainer
         pathChooser.addOption("PUT CUBE AND MIDDLE OUT THEN BALANCE", "PUT_CUBE_AND_MIDDLE_OUT_AND_BALANCE");
         pathChooser.addOption("PUT CUBE AND LONG OUT THEN BALANCE", "PUT_CUBE_AND_LONG_OUT_AND_BALANCE");
         pathChooser.addOption("PUT CUBE AND SHORT OUT THEN BALANCE", "PUT_CUBE_AND_SHORT_OUT_AND_BALANCE");
-        pathChooser.addOption("PUT LOW CUBE AND OUT", "PUT_LOW_CUBE_AND_OUT");
-        pathChooser.addOption("PUT LOW CUBE AND BALANCE", "PUT_LOW_CUBE_AND_BALANCE");
         SmartDashboard.putData("Auto choices", pathChooser);
     }
 
